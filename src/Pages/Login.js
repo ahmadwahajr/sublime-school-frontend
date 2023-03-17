@@ -2,22 +2,42 @@ import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Card } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { login } from "../redux/actions/user-actions";
+import { LoadingOutlined } from "@ant-design/icons";
+import { Spin } from "antd";
+import { message } from "antd";
 const Login = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();
-  const { userInfo } = useSelector(state => state?.loggedInUser);
-
+  const loggedInUser = useSelector(state => state?.loggedInUser);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 16,
+        color: "black",
+        marginLeft: "4px"
+      }}
+      spin
+    />
+  );
   useEffect(() => {
-    console.log(userInfo);
-    if (userInfo?.status === "success") {
+    if (loggedInUser?.userInfo?.status === "success") {
       navigate("/");
+      setDisabled(false);
+      setLoading(false);
+    } else if (loggedInUser?.error) {
+      message?.error("Username or password does not exist");
+      setDisabled(false);
+      setLoading(false);
     }
-  }, [userInfo]);
+  }, [loggedInUser]);
   const onFinish = values => {
-    console.log(values);
+    setDisabled(true);
+    setLoading(true);
     dispatch(login({ ...values }));
   };
   return (
@@ -89,8 +109,9 @@ const Login = () => {
                 type="primary"
                 htmlType="submit"
                 className="login-form-button"
+                disabled={disabled}
               >
-                Log in
+                Log in {loading && <Spin indicator={antIcon} />}
               </Button>
             </Form.Item>
           </Form>

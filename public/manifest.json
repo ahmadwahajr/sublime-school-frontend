@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Sublime School",
+  "name": "Sublime School Management System",
   
   "start_url": ".",
   "display": "standalone",
