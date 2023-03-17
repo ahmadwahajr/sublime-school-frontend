@@ -2,7 +2,6 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGIN_REQUEST,
   USER_LOGIN_FAIL,
-  USER_LOGIN_LOGOUT,
   USER_LOGOUT_REQUEST,
   USER_LOGOUT_SUCCESS,
   USER_LOGOUT_FAIL,
@@ -23,10 +22,13 @@ export const login =
         type: USER_LOGIN_REQUEST
       });
 
-      const { data } = await post(`http://localhost:8000/api/v1/users/login`, {
-        username,
-        password
-      });
+      const { data } = await post(
+        `${process.env.REACT_APP_API_URL}/api/v1/users/login`,
+        {
+          username,
+          password
+        }
+      );
       dispatch({
         type: USER_LOGIN_SUCCESS,
         payload: data
