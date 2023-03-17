@@ -23,7 +23,9 @@ function SideBar() {
       onCollapse={() => onCollapse()}
     >
       <div className="logo">
-        <img src={logo} alt="logo"></img>
+        <span style={{ color: "#f2f239" }}>
+          {collapsed === true ? "Sublime" : "Sublime School"}
+        </span>
       </div>
 
       <Menu theme="dark" defaultSelectedKeys={["5"]} mode="inline">
