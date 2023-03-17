@@ -2,7 +2,6 @@ import React from "react";
 import { Layout, Row } from "antd";
 import SideBar from "../Components/SideBar.js";
 import "../App.css";
-import { Col, Button } from "antd";
 const { Header, Content, Footer } = Layout;
 
 export default function Layouts({ Children }) {

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Statistic, Row, Col } from "antd";
-import axios from "axios";
+
 import TableComp from "../Components/Students/Table/TableComp";
-import fetchUrl from "../fetchURL.js";
+
 const columns = [
   {
     title: "Patient",
@@ -18,8 +18,8 @@ const columns = [
   }
 ];
 function Dashboard() {
-  const [dashboardStats, setDashboardStats] = useState([]);
-  const [appointmentData, setappointmentData] = useState([]);
+  const [dashboardStats] = useState([]);
+  const [appointmentData] = useState([]);
   useEffect(() => {
     getDashboardData();
   }, []);

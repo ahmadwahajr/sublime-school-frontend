@@ -10,7 +10,7 @@ import {
   GET_USER_FAIL
 } from "../constants/user-constants.js";
 
-import { success, error } from "../../utils/toastr";
+import { error } from "../../utils/toastr";
 import { post } from "../../utils/apiCalls.js";
 import store from "../../store.js";
 import axios from "axios";

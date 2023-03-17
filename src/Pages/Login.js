@@ -8,7 +8,7 @@ import { login } from "../redux/actions/user-actions";
 import { LoadingOutlined } from "@ant-design/icons";
 import { Spin, message } from "antd";
 const Login = () => {
-  let navigate = useNavigate();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const loggedInUser = useSelector(state => state?.loggedInUser);
   const [loading, setLoading] = useState(false);
@@ -33,7 +33,7 @@ const Login = () => {
       setDisabled(false);
       setLoading(false);
     }
-  }, [loggedInUser]);
+  }, [loggedInUser, navigate]);
   const onFinish = values => {
     setDisabled(true);
     setLoading(true);

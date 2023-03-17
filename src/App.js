@@ -3,7 +3,7 @@ import Login from "./Pages/Login.js";
 import Layout from "./Pages/Layout.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import Dashboard from "./Pages/Dashboard";
+// import Dashboard from "./Pages/Dashboard";
 import Students from "./Pages/Students";
 function App() {
   return (
