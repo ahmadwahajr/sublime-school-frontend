@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { login } from "../redux/actions/user-actions";
 import { LoadingOutlined } from "@ant-design/icons";
-import { Spin } from "antd";
-import { message } from "antd";
+import { Spin, message } from "antd";
 const Login = () => {
   let navigate = useNavigate();
   const dispatch = useDispatch();

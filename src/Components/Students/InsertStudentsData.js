@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Row, Input, Button, Form } from "antd";
+import React, { useState, useRef } from "react";
+import { Row, Input, Button, Form, Spin } from "antd";
 import { Select, DatePicker, message, Radio, Popconfirm } from "antd";
 import ClassNoData from "../../redux/constants/classNoConstants";
 import SystemConstants from "../../redux/constants/systemConstants";
@@ -8,7 +8,7 @@ import {
   editStudentData,
   deleteStudentData
 } from "../../redux/actions/student-actions";
-
+import { LoadingOutlined } from "@ant-design/icons";
 export default function InsertStudentsData({
   filters,
   addStudentRecord,
@@ -21,14 +21,26 @@ export default function InsertStudentsData({
   const formRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [disabled, setDisabled] = useState(false);
+  const antIcon = (
+    <LoadingOutlined
+      style={{
+        fontSize: 16,
+        color: "black",
+        marginLeft: "4px"
+      }}
+      spin
+    />
+  );
   const showPopconfirm = () => {
     setOpen(true);
   };
   const handleOk = async () => {
     setConfirmLoading(true);
+    setDisabled(true);
     const data = await deleteStudentData({ _id: initialValues._id });
     if (data?.data?.status === "success") {
-      console.log(data?.data);
       deleteStudentRecord(initialValues._id);
       message.success("Student Updated");
       setOpen(false);
@@ -51,17 +63,24 @@ export default function InsertStudentsData({
     wrapperCol: { offset: 8, span: 16 }
   };
   const dataInsertion = async values => {
+    setLoading(true);
+    setDisabled(true);
     const data = await insertStudentsData(values);
     if (data?.data?.status === "success") {
       addStudentRecord(data?.data);
-
       message.success("Student Added");
+      setLoading(false);
+      setDisabled(false);
     } else {
       message.error(data);
+      setLoading(false);
+      setDisabled(false);
     }
   };
   const dataUpdation = async values => {
-    console.log("In data updation", values);
+    setLoading(true);
+    setDisabled(true);
+
     const data = await editStudentData({ ...values, _id: initialValues._id });
     if (data?.data?.status === "success") {
       console.log(data?.data);
@@ -70,6 +89,8 @@ export default function InsertStudentsData({
       setEditModal(false);
     } else {
       message.error(data);
+      setLoading(false);
+      setDisabled(false);
     }
   };
   const finishFunction = values => {
@@ -258,7 +279,7 @@ export default function InsertStudentsData({
         >
           <Input name="batch" placeholder="Batch" />
         </Form.Item>
-        <Form.Item label="Enroll IN:" name="enrolledIn">
+        <Form.Item label="Enroll In:" name="enrolledIn">
           <Radio.Group disabled={type === "Edit"}>
             {SystemConstants.map((data, index) => (
               <Radio key={data.label} value={data.value}>
@@ -269,7 +290,8 @@ export default function InsertStudentsData({
         </Form.Item>
         <Form.Item
           name="admissionDate"
-          style={{ display: "inline-block", width: "calc(50%)" }}
+          label="Admission Date"
+          style={{ display: "inline-block", width: "calc(80%)" }}
         >
           <DatePicker placeholder="Admission Date" />
         </Form.Item>
@@ -278,11 +300,12 @@ export default function InsertStudentsData({
             type="primary"
             htmlType="submit"
             style={{ marginRight: "8px" }}
+            disabled={disabled}
           >
-            Submit
+            Submit {loading && <Spin indicator={antIcon} />}
           </Button>
           {type === "Insert" && (
-            <Button htmlType="button" onClick={onReset}>
+            <Button htmlType="button" onClick={onReset} disabled={disabled}>
               Reset
             </Button>
           )}
@@ -297,7 +320,11 @@ export default function InsertStudentsData({
               }}
               onCancel={handleCancel}
             >
-              <Button type="danger" onClick={showPopconfirm}>
+              <Button
+                type="danger"
+                onClick={showPopconfirm}
+                disabled={disabled}
+              >
                 Delete
               </Button>
             </Popconfirm>
