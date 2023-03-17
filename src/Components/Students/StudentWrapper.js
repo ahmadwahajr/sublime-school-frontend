@@ -41,9 +41,7 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
     };
   }, [filters]);
 
-  const onChangeFee = (e, data) => {
-    console.log("CHECKED", data);
-  };
+  const onChangeFee = (e, data) => {};
   const handleChangeAction = ({ key }, record) => {
     if (key === "1") {
       const date = dayjs(record?.studentData?.admissionDate);

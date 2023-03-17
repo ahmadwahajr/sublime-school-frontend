@@ -22,11 +22,9 @@ function StudentHeader({
     setIsModalVisible(false);
   };
   const handleChange = value => {
-    console.log(`selected ${value}`);
     setFilters(data => ({ ...data, classNo: value }));
   };
   const handleChangeRadio = ({ target: { value } }) => {
-    console.log("radio1 checked", value);
     setFilters(data => ({ ...data, enrolledIn: value }));
   };
 

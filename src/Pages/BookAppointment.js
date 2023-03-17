@@ -10,7 +10,7 @@ import {
   Select,
   DatePicker,
   TimePicker,
-  message,
+  message
 } from "antd";
 import fetchUrl from "../fetchURL.js";
 export default function BookAppointment() {
@@ -58,17 +58,14 @@ export default function BookAppointment() {
             method: "post",
             url: `${fetchUrl}/insertAppointmentData/`,
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded",
+              "Content-Type": "application/x-www-form-urlencoded"
             },
             data: qs.stringify({
               doctorId,
               patientId: values.patientId,
               appDate: date.toDate().toISOString(),
-              appTime: values.timePicker
-                .add(15, "hours")
-                .toDate()
-                .toISOString(),
-            }),
+              appTime: values.timePicker.add(15, "hours").toDate().toISOString()
+            })
           })
             .then((req, res) => {
               setErrorMsg("");
@@ -86,9 +83,7 @@ export default function BookAppointment() {
   function handleChange(value) {
     setDoctorId(value);
   }
-  const onFinishFailed = () => {
-    console.log("Form can't be submitted");
-  };
+  const onFinishFailed = () => {};
   return (
     <>
       <Row gutter={16} justify="center" style={{ marginTop: "20px" }}>
@@ -111,7 +106,7 @@ export default function BookAppointment() {
               name="patientId"
               hasFeedback
               rules={[
-                { required: true, message: "Please input your PatientID!" },
+                { required: true, message: "Please input your PatientID!" }
               ]}
               validateStatus={IDValidationStatus}
             >
@@ -124,7 +119,7 @@ export default function BookAppointment() {
             <Form.Item
               label="Doctor"
               rules={[
-                { required: true, message: "Please Select your Doctor!" },
+                { required: true, message: "Please Select your Doctor!" }
               ]}
             >
               <Select onChange={handleChange}>

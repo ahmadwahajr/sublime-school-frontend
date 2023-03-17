@@ -2,7 +2,7 @@ import axios from "axios";
 import store from "../store";
 export async function get(url, param) {
   const token = store?.getState()?.loggedInUser?.userInfo?.token;
-  console.log(param);
+
   let config = {
     params: {
       ...param
@@ -28,7 +28,7 @@ export async function post(url, params) {
       "Content-Type": "application/json"
     }
   };
-  console.log("calling", url, params);
+
   return new Promise((resolve, reject) => {
     axios
       .post(url, params, config)

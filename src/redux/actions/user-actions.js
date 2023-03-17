@@ -82,7 +82,6 @@ export const logoutApi = _id => async dispatch => {
 };
 
 export const getUser = _id => async dispatch => {
-  console.log("in get User");
   const token = store?.getState()?.loggedInUser?.userInfo?.token;
   dispatch({
     type: GET_USER_REQUEST
@@ -105,7 +104,6 @@ export const getUser = _id => async dispatch => {
       payload: data.data
     });
   } catch (er) {
-    console.log(er);
     error(er.response.data.message);
 
     dispatch({

@@ -41,7 +41,7 @@ export const editStudentData = async param => {
       `${process.env.REACT_APP_API_URL}/api/v1/students/update-student`,
       param
     );
-    console.log(data);
+
     return data;
   } catch (err) {
     if (err?.response?.data?.message) return err?.response?.data?.message;
@@ -54,7 +54,6 @@ export const editStudentAction = (record, tableData, settableData, filters) => {
     obj => obj?.studentData?._id === record?.data?._id
   );
 
-  console.log("INDEX: ", elementIndex, record?.data);
   const data = tableData?.data;
   data[elementIndex]["studentData"] = record?.data;
 
@@ -69,7 +68,7 @@ export const deleteStudentData = async param => {
       `${process.env.REACT_APP_API_URL}/api/v1/students/delete-student`,
       param
     );
-    console.log(data);
+
     return data;
   } catch (err) {
     if (err?.response?.data?.message) return err?.response?.data?.message;
@@ -81,8 +80,6 @@ export const deleteStudentAction = (_id, tableData, settableData, filters) => {
   const filteredData = tableData?.data?.filter(
     obj => obj?.studentData?._id !== _id
   );
-
-  console.log("INDEX: ", filteredData);
 
   settableData(prevData => {
     return { ...prevData, data: filteredData };
