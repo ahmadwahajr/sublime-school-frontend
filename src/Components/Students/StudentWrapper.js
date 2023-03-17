@@ -61,7 +61,8 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   const deleteStudentRecord = record => {
     deleteStudentAction(record, tableData, settableData, filters);
   };
-  let messages = filters.enrolledIn.toUpperCase() + " " + message;
+  let enrollment = filters.enrolledIn === "school" ? "School" : "Academy";
+  let messages = enrollment + " " + message;
   return (
     <div style={{ padding: "40px 20px" }}>
       <Header

@@ -194,6 +194,9 @@ export default function TableComp({
         size="middle"
         loading={loading}
         pagination={{ pageSize: `${paginationSize}` }}
+        scroll={{
+          y: "50vh"
+        }}
       />
     </div>
   );
