@@ -11,7 +11,7 @@ import {
 } from "../../redux/actions/student-actions";
 function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   const [filters, setFilters] = useState({
-    classNo: "1",
+    classNo: "playgroup",
     enrolledIn: "school"
   });
   const [tableData, settableData] = useState({

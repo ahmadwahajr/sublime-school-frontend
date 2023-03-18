@@ -83,6 +83,7 @@ export default function InsertStudentsData({
 
     const data = await editStudentData({ ...values, _id: initialValues._id });
     if (data?.data?.status === "success") {
+      console.log(data?.data);
       editStudentRecord(data?.data);
       message.success("Student Updated");
       setEditModal(false);

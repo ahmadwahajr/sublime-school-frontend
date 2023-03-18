@@ -1,5 +1,17 @@
 const data = [
   {
+    value: "playgroup",
+    label: "Playgroup"
+  },
+  {
+    value: "nuresery",
+    label: "Nursery"
+  },
+  {
+    value: "prep",
+    label: "Prep"
+  },
+  {
     value: "1",
     label: "One"
   },
