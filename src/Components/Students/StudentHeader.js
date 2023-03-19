@@ -68,6 +68,7 @@ function StudentHeader({
         </Row>
       </Col>
       <Modal
+        width="85%"
         title="Student Record"
         open={isModalVisible}
         onCancel={handleCancel}

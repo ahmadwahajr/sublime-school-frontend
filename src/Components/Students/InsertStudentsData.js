@@ -56,11 +56,14 @@ export default function InsertStudentsData({
   };
   const layout = {
     wrapperCol: {
-      span: 22
+      span: 17
+    },
+    labelCol: {
+      span: 8
     }
   };
   const tailLayout = {
-    wrapperCol: { offset: 8, span: 16 }
+    wrapperCol: { offset: 11, span: 16 }
   };
   const dataInsertion = async values => {
     setLoading(true);
@@ -123,7 +126,7 @@ export default function InsertStudentsData({
         preserve={false}
       >
         <Form.Item
-          label=""
+          label="Name"
           name="name"
           rules={[
             {
@@ -137,7 +140,7 @@ export default function InsertStudentsData({
         </Form.Item>
 
         <Form.Item
-          label=""
+          label="Father Name"
           name="fatherName"
           rules={[
             {
@@ -150,7 +153,7 @@ export default function InsertStudentsData({
           <Input name="fatherName" placeholder="Father Name" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Phone # 1"
           name="phoneNo1"
           rules={[
             {
@@ -163,7 +166,7 @@ export default function InsertStudentsData({
           <Input name="phoneNo1" placeholder="Contact # 1" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Phone # 2"
           name="phoneNo2"
           rules={[
             {
@@ -176,7 +179,7 @@ export default function InsertStudentsData({
           <Input name="phoneNo2" placeholder="Contact # 2" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Roll No"
           name="rollNo"
           rules={[
             {
@@ -189,6 +192,7 @@ export default function InsertStudentsData({
           <Input name="rollNo" placeholder="Roll No" />
         </Form.Item>
         <Form.Item
+          label="Class No"
           name={["classNo"]}
           style={{ display: "inline-block", width: "calc(50%)" }}
           rules={[{ required: true, message: "Class is required" }]}
@@ -202,7 +206,7 @@ export default function InsertStudentsData({
           </Select>
         </Form.Item>
         <Form.Item
-          label=""
+          label="Annual Fee"
           name={["fee", "annualFee"]}
           rules={[
             {
@@ -215,7 +219,7 @@ export default function InsertStudentsData({
           <Input placeholder="Annual Fee" type="number" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="School Fee"
           name={["fee", "schoolFee"]}
           rules={[
             {
@@ -228,7 +232,7 @@ export default function InsertStudentsData({
           <Input placeholder="School Fee" type="number" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Syllabus Fee"
           name={["fee", "syllabusFee"]}
           rules={[
             {
@@ -241,7 +245,7 @@ export default function InsertStudentsData({
           <Input placeholder="Syllabus Fee" type="number" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Registration Fee"
           name={["fee", "registrationFee"]}
           rules={[
             {
@@ -254,7 +258,7 @@ export default function InsertStudentsData({
           <Input placeholder="Registration Fee" type="number" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Dubata/Tie"
           name="dubata"
           rules={[
             {
@@ -264,10 +268,10 @@ export default function InsertStudentsData({
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
-          <Input name="dubata" placeholder="Dubata" />
+          <Input name="dubata" placeholder="Dubata/Tie" />
         </Form.Item>
         <Form.Item
-          label=""
+          label="Batch"
           name="batch"
           rules={[
             {
@@ -279,7 +283,11 @@ export default function InsertStudentsData({
         >
           <Input name="batch" placeholder="Batch" />
         </Form.Item>
-        <Form.Item label="Enroll In:" name="enrolledIn">
+        <Form.Item
+          label="Enroll In:"
+          name="enrolledIn"
+          style={{ display: "inline-block", width: "calc(50%)" }}
+        >
           <Radio.Group disabled={type === "Edit"}>
             {SystemConstants.map((data, index) => (
               <Radio key={data.label} value={data.value}>
@@ -291,7 +299,7 @@ export default function InsertStudentsData({
         <Form.Item
           name="admissionDate"
           label="Admission Date"
-          style={{ display: "inline-block", width: "calc(80%)" }}
+          style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <DatePicker placeholder="Admission Date" />
         </Form.Item>

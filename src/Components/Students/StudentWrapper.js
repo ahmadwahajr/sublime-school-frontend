@@ -27,10 +27,17 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
     setEditModal(false);
   };
   const dataFetch = async filters => {
+    settableData(prevData => {
+      return { ...prevData, loading: true };
+    });
     const data = await getStudentsdata(filters);
     if (data) {
       settableData(prevData => {
         return { ...prevData, loading: false, data: data };
+      });
+    } else {
+      settableData(prevData => {
+        return { ...prevData, loading: false };
       });
     }
   };
@@ -80,6 +87,7 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
             onCancel={handleCancel}
             footer={false}
             destroyOnClose
+            width="85%"
           >
             <InsertComp
               filters={filters}
