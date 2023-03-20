@@ -8,9 +8,11 @@ import {
   addStudentAction,
   editStudentAction,
   deleteStudentAction,
-  payStudentAction
+  payStudentAction,
+  getFeeHistory
 } from "../../redux/actions/student-actions";
 import ChallanComp from "./ChallanComp";
+import HistoryComp from "./History";
 function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   const [filters, setFilters] = useState({
     classNo: "playgroup",
@@ -24,7 +26,9 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
 
   const [editModal, setEditModal] = useState(false);
   const [challanModal, setChallanModal] = useState(false);
+  const [historyModal, setHistoryModal] = useState(false);
   const [editData, setEditData] = useState({});
+  const [historyData, setHistoryData] = useState(null);
 
   const handleCancel = () => {
     setEditModal(false);
@@ -52,7 +56,12 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   }, [filters]);
 
   const onChangeFee = (e, data) => {};
-  const handleChangeAction = ({ key }, record) => {
+  const manageHistory = async id => {
+    setHistoryModal(true);
+    const data = await getFeeHistory({ _id: id });
+    if (data) setHistoryData(data);
+  };
+  const handleChangeAction = async ({ key }, record) => {
     if (key === "1") {
       const date = dayjs(record?.studentData?.admissionDate);
       const values = { ...record?.studentData, admissionDate: date };
@@ -62,6 +71,9 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
     if (key === "2") {
       setEditData(record?.studentData);
       setChallanModal(true);
+    }
+    if (key === "3") {
+      manageHistory(record?.studentData?._id);
     }
   };
   const editStudentRecord = record => {
@@ -123,6 +135,16 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
               payStudentFee={payStudentFee}
               setEditModal={setChallanModal}
             />
+          </Modal>
+          <Modal
+            title="Student Record"
+            open={historyModal}
+            onCancel={() => setHistoryModal(false)}
+            footer={false}
+            destroyOnClose
+            width="70%"
+          >
+            <HistoryComp data={historyData} />
           </Modal>
           <Table
             data={tableData?.data}

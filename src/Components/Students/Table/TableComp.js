@@ -158,7 +158,7 @@ export default function TableComp({
       render: (_, record) => (
         <Space size="middle">
           <Checkbox
-            checked={record?.studentFee?.isPaid}
+            checked={record?.feeDetails?.isPaid}
             //   onChange={e => onChangeFee(e, record)}
           />
         </Space>

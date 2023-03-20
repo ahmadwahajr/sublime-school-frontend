@@ -102,13 +102,26 @@ export const payStudentFeeReq = async param => {
 
 export const payStudentAction = (record, tableData, settableData, filters) => {
   const elementIndex = tableData?.data?.findIndex(
-    obj => obj?.studentData?._id === record?.data?._id
+    obj => obj?.studentData?._id === record?.studentData?._id
   );
 
   const data = tableData?.data;
-  data[elementIndex]["studentData"] = record?.data;
+  data[elementIndex]["studentData"] = record?.studentData;
+  data[elementIndex]["feeDetails"] = record?.feeDetails;
 
   settableData(prevData => {
     return { ...prevData, data };
   });
+};
+export const getFeeHistory = async param => {
+  try {
+    const { data } = await get(
+      `${process.env.REACT_APP_API_URL}/api/v1/fee/get-fee`,
+      param
+    );
+
+    return [...data.data];
+  } catch (err) {
+    return [err];
+  }
 };

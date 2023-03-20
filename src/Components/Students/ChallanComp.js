@@ -17,7 +17,7 @@ export default function InsertStudentsData({
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [formValues, setFormValues] = useState({
-    balance: { ...initialValues.balance }
+    balance: { ...initialValues?.balance }
   });
   const downloadChallan = useReactToPrint({
     content: () => componentRef.current
@@ -102,7 +102,7 @@ export default function InsertStudentsData({
           <InputNumber
             placeholder="Annual Fee"
             type="number"
-            max={initialValues.balance.annualFee}
+            max={initialValues?.balance?.annualFee}
             min={0}
           />
         </Form.Item>
@@ -120,7 +120,7 @@ export default function InsertStudentsData({
           <InputNumber
             placeholder="School Fee"
             type="number"
-            max={initialValues.balance.schoolFee}
+            max={initialValues?.balance?.schoolFee}
             min={0}
           />
         </Form.Item>
@@ -138,7 +138,7 @@ export default function InsertStudentsData({
           <InputNumber
             placeholder="Syllabus Fee"
             type="number"
-            max={initialValues.balance.syllabusFee}
+            max={initialValues?.balance?.syllabusFee}
             min={0}
           />
         </Form.Item>
@@ -152,13 +152,13 @@ export default function InsertStudentsData({
             }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
-          max={initialValues.balance.registrationFee}
+          max={initialValues?.balance?.registrationFee}
           min={0}
         >
           <InputNumber
             placeholder="Registration Fee"
             type="number"
-            max={initialValues.balance.registrationFee}
+            max={initialValues?.balance?.registrationFee}
             min={0}
           />
         </Form.Item>
