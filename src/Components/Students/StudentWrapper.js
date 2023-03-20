@@ -9,6 +9,7 @@ import {
   editStudentAction,
   deleteStudentAction
 } from "../../redux/actions/student-actions";
+import ChallanComp from "./ChallanComp";
 function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   const [filters, setFilters] = useState({
     classNo: "playgroup",
@@ -21,6 +22,7 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   });
 
   const [editModal, setEditModal] = useState(false);
+  const [challanModal, setChallanModal] = useState(false);
   const [editData, setEditData] = useState({});
 
   const handleCancel = () => {
@@ -55,6 +57,10 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
       const values = { ...record?.studentData, admissionDate: date };
       setEditData(values);
       setEditModal(true);
+    }
+    if (key === "2") {
+      setEditData(record?.studentData);
+      setChallanModal(true);
     }
   };
   const editStudentRecord = record => {
@@ -97,6 +103,21 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
               editStudentRecord={editStudentRecord}
               setEditModal={setEditModal}
               deleteStudentRecord={deleteStudentRecord}
+            />
+          </Modal>
+          <Modal
+            title="Student Record"
+            open={challanModal}
+            onCancel={() => setChallanModal(false)}
+            footer={false}
+            destroyOnClose
+            width="50%"
+          >
+            <ChallanComp
+              filters={filters}
+              addStudentRecord={null}
+              type="Edit"
+              initialValues={editData}
             />
           </Modal>
           <Table
