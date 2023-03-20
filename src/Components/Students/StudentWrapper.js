@@ -7,7 +7,8 @@ import {
   getStudentsdata,
   addStudentAction,
   editStudentAction,
-  deleteStudentAction
+  deleteStudentAction,
+  payStudentAction
 } from "../../redux/actions/student-actions";
 import ChallanComp from "./ChallanComp";
 function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
@@ -66,6 +67,9 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
   const editStudentRecord = record => {
     editStudentAction(record, tableData, settableData, filters);
   };
+  const payStudentFee = record => {
+    payStudentAction(record, tableData, settableData);
+  };
   const addStudentRecord = record => {
     addStudentAction(record, settableData, filters);
   };
@@ -115,9 +119,9 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
           >
             <ChallanComp
               filters={filters}
-              addStudentRecord={null}
-              type="Edit"
               initialValues={editData}
+              payStudentFee={payStudentFee}
+              setEditModal={setChallanModal}
             />
           </Modal>
           <Table

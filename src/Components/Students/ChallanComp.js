@@ -4,9 +4,13 @@ import { Select, DatePicker, message, Radio, Popconfirm } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./ChallanDocument/ChallanDocument";
 
-import { deleteStudentData } from "../../redux/actions/student-actions";
+import { payStudentFeeReq } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
-export default function InsertStudentsData({ initialValues, setEditModal }) {
+export default function InsertStudentsData({
+  initialValues,
+  setEditModal,
+  payStudentFee
+}) {
   const formRef = useRef(null);
   const componentRef = useRef();
   const [open, setOpen] = useState(false);
@@ -22,33 +26,41 @@ export default function InsertStudentsData({ initialValues, setEditModal }) {
     setOpen(true);
   };
   const handleOk = async () => {
-    // setConfirmLoading(true);
-    // setDisabled(true);
-    // const data = await deleteStudentData({ _id: initialValues._id });
-    // if (data?.data?.status === "success") {
-    //   deleteStudentRecord(initialValues._id);
-    //   message.success("Student Updated");
-    //   setOpen(false);
-    //   setConfirmLoading(false);
-    //   setEditModal(false);
-    // } else {
-    //   message.error(data);
-    //   setConfirmLoading(false);
-    // }
+    setConfirmLoading(true);
+    const values = formRef?.current?.getFieldsValue();
+    setDisabled(true);
+    const data = await payStudentFeeReq({
+      ...values,
+      _id: initialValues._id
+    });
+    if (data?.data?.status === "success") {
+      console.log(data?.data);
+      payStudentFee(data?.data);
+      message.success("Fee Paid");
+      setConfirmLoading(false);
+      setOpen(false);
+      setEditModal(false);
+    } else {
+      message.error(data);
+      setConfirmLoading(false);
+
+      setDisabled(false);
+    }
   };
+
   const handleCancel = () => {
     setOpen(false);
   };
   const layout = {
     wrapperCol: {
-      span: 17
+      span: 10
     },
     labelCol: {
-      span: 8
+      span: 14
     }
   };
   const tailLayout = {
-    wrapperCol: { offset: 11, span: 16 }
+    wrapperCol: { offset: 7, span: 16 }
   };
 
   const onFinishFailed = errorInfo => {
