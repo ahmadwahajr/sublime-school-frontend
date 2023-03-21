@@ -13,7 +13,7 @@ import {
 } from "../../redux/actions/student-actions";
 import ChallanComp from "./ChallanComp";
 import HistoryComp from "./History";
-function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
+function StudentWrapper({ message, deleteData, InsertOrUpdate }) {
   const [filters, setFilters] = useState({
     classNo: "playgroup",
     enrolledIn: "school"
@@ -95,8 +95,7 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
       <Header
         message={messages}
         deleteData={deleteData}
-        InsertComp={InsertComp}
-        UpdateComp={UpdateComp}
+        InsertComp={InsertOrUpdate}
         filters={filters}
         setFilters={setFilters}
         addStudentRecord={addStudentRecord}
@@ -111,7 +110,7 @@ function StudentWrapper({ message, deleteData, InsertComp, UpdateComp }) {
             destroyOnClose
             width="85%"
           >
-            <InsertComp
+            <InsertOrUpdate
               filters={filters}
               addStudentRecord={null}
               type="Edit"

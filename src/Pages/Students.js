@@ -1,7 +1,6 @@
 import React from "react";
 import ChildPage from "../Components/Students/StudentWrapper.js";
-import Insert from "../Components/Students/InsertStudentsData";
-import UpdateComp from "../Components/UpdateDoctor";
+import InsertOrUpdate from "../Components/Students/InsertStudentsData";
 function Students() {
   const deleteData = {
     link: "/deleteDoctorsData"
@@ -11,8 +10,7 @@ function Students() {
       <ChildPage
         message="Students Records"
         deleteData={deleteData}
-        InsertComp={Insert}
-        UpdateComp={UpdateComp}
+        InsertOrUpdate={InsertOrUpdate}
       />
     </>
   );
