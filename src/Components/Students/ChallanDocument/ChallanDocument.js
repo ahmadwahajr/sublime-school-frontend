@@ -5,7 +5,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
   const { personalData, values } = props;
   const [fee, setFee] = useState({
     payableAmount: 0,
-    balance: 0
+    balance: 0,
   });
 
   useEffect(() => {

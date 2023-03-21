@@ -9,7 +9,7 @@ import { LoadingOutlined } from "@ant-design/icons";
 export default function InsertStudentsData({
   initialValues,
   setEditModal,
-  payStudentFee
+  payStudentFee,
 }) {
   const formRef = useRef(null);
   const componentRef = useRef();
@@ -17,10 +17,10 @@ export default function InsertStudentsData({
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [formValues, setFormValues] = useState({
-    balance: { ...initialValues?.balance }
+    balance: { ...initialValues?.balance },
   });
   const downloadChallan = useReactToPrint({
-    content: () => componentRef.current
+    content: () => componentRef.current,
   });
   const showPopconfirm = () => {
     setOpen(true);
@@ -31,7 +31,7 @@ export default function InsertStudentsData({
     setDisabled(true);
     const data = await payStudentFeeReq({
       ...values,
-      _id: initialValues._id
+      _id: initialValues._id,
     });
     if (data?.data?.status === "success") {
       console.log(data?.data);
@@ -53,24 +53,24 @@ export default function InsertStudentsData({
   };
   const layout = {
     wrapperCol: {
-      span: 10
+      span: 10,
     },
     labelCol: {
-      span: 14
-    }
+      span: 14,
+    },
   };
   const tailLayout = {
-    wrapperCol: { offset: 7, span: 16 }
+    wrapperCol: { offset: 7, span: 16 },
   };
 
-  const onFinishFailed = errorInfo => {
+  const onFinishFailed = (errorInfo) => {
     message.error("Failed:", errorInfo);
   };
   const onValuesChange = (values, allValues) => {
     console.log("VALUES:", formRef?.current?.getFieldsValue());
 
-    setFormValues(prev => ({
-      balance: { ...allValues.balance }
+    setFormValues((prev) => ({
+      balance: { ...allValues.balance },
     }));
   };
   return (
@@ -94,8 +94,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Annual Fee!"
-            }
+              message: "Please input Annual Fee!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -112,8 +112,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input School Fee!"
-            }
+              message: "Please input School Fee!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -130,8 +130,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Syllabus Fee!"
-            }
+              message: "Please input Syllabus Fee!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -148,8 +148,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Registration Fee!"
-            }
+              message: "Please input Registration Fee!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
           max={initialValues?.balance?.registrationFee}
@@ -168,8 +168,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Late Fee!"
-            }
+              message: "Please input Late Fee!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -192,7 +192,7 @@ export default function InsertStudentsData({
             open={open}
             onConfirm={handleOk}
             okButtonProps={{
-              loading: confirmLoading
+              loading: confirmLoading,
             }}
             onCancel={handleCancel}
           >

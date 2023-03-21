@@ -9,19 +9,20 @@ import {
   editStudentAction,
   deleteStudentAction,
   payStudentAction,
-  getFeeHistory
+  getFeeHistory,
 } from "../../redux/actions/student-actions";
 import ChallanComp from "./ChallanComp";
 import HistoryComp from "./History";
 function StudentWrapper({ message, deleteData, InsertOrUpdate }) {
   const [filters, setFilters] = useState({
     classNo: "playgroup",
-    enrolledIn: "school"
+    enrolledIn: "school",
   });
+
   const [tableData, settableData] = useState({
     data: [],
     loading: true,
-    paginationSize: 15
+    paginationSize: 15,
   });
 
   const [editModal, setEditModal] = useState(false);
@@ -33,17 +34,17 @@ function StudentWrapper({ message, deleteData, InsertOrUpdate }) {
   const handleCancel = () => {
     setEditModal(false);
   };
-  const dataFetch = async filters => {
-    settableData(prevData => {
+  const dataFetch = async (filters) => {
+    settableData((prevData) => {
       return { ...prevData, loading: true };
     });
     const data = await getStudentsdata(filters);
     if (data) {
-      settableData(prevData => {
+      settableData((prevData) => {
         return { ...prevData, loading: false, data: data };
       });
     } else {
-      settableData(prevData => {
+      settableData((prevData) => {
         return { ...prevData, loading: false };
       });
     }
@@ -56,7 +57,7 @@ function StudentWrapper({ message, deleteData, InsertOrUpdate }) {
   }, [filters]);
 
   const onChangeFee = (e, data) => {};
-  const manageHistory = async id => {
+  const manageHistory = async (id) => {
     setHistoryModal(true);
     const data = await getFeeHistory({ _id: id });
     if (data) setHistoryData(data);
@@ -76,20 +77,21 @@ function StudentWrapper({ message, deleteData, InsertOrUpdate }) {
       manageHistory(record?.studentData?._id);
     }
   };
-  const editStudentRecord = record => {
+  const editStudentRecord = (record) => {
     editStudentAction(record, tableData, settableData, filters);
   };
-  const payStudentFee = record => {
+  const payStudentFee = (record) => {
     payStudentAction(record, tableData, settableData);
   };
-  const addStudentRecord = record => {
+  const addStudentRecord = (record) => {
     addStudentAction(record, settableData, filters);
   };
-  const deleteStudentRecord = record => {
+  const deleteStudentRecord = (record) => {
     deleteStudentAction(record, tableData, settableData, filters);
   };
   let enrollment = filters.enrolledIn === "school" ? "School" : "Academy";
   let messages = enrollment + " " + message;
+
   return (
     <div style={{ padding: "40px 20px" }}>
       <Header

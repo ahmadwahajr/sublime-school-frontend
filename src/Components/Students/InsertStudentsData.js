@@ -6,9 +6,10 @@ import SystemConstants from "../../redux/constants/systemConstants";
 import {
   insertStudentsData,
   editStudentData,
-  deleteStudentData
+  deleteStudentData,
 } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
+
 export default function InsertStudentsData({
   filters,
   addStudentRecord,
@@ -16,19 +17,21 @@ export default function InsertStudentsData({
   initialValues,
   editStudentRecord,
   setEditModal,
-  deleteStudentRecord
+  deleteStudentRecord,
 }) {
   const formRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
+
   const antIcon = (
     <LoadingOutlined
       style={{
         fontSize: 16,
         color: "black",
-        marginLeft: "4px"
+        marginLeft: "4px",
       }}
       spin
     />
@@ -56,16 +59,16 @@ export default function InsertStudentsData({
   };
   const layout = {
     wrapperCol: {
-      span: 17
+      span: 17,
     },
     labelCol: {
-      span: 8
-    }
+      span: 8,
+    },
   };
   const tailLayout = {
-    wrapperCol: { offset: 11, span: 16 }
+    wrapperCol: { offset: 11, span: 16 },
   };
-  const dataInsertion = async values => {
+  const dataInsertion = async (values) => {
     setLoading(true);
     setDisabled(true);
     const data = await insertStudentsData(values);
@@ -80,7 +83,7 @@ export default function InsertStudentsData({
       setDisabled(false);
     }
   };
-  const dataUpdation = async values => {
+  const dataUpdation = async (values) => {
     setLoading(true);
     setDisabled(true);
 
@@ -96,18 +99,18 @@ export default function InsertStudentsData({
       setDisabled(false);
     }
   };
-  const finishFunction = values => {
+  const finishFunction = (values) => {
     if (type === "Insert") dataInsertion(values);
     if (type === "Edit") dataUpdation(values);
   };
-  const onFinish = values => {
+  const onFinish = (values) => {
     finishFunction(values);
   };
 
   const onReset = () => {
     formRef.resetFields();
   };
-  const onFinishFailed = errorInfo => {
+  const onFinishFailed = (errorInfo) => {
     message.error("Failed:", errorInfo);
   };
   return (
@@ -131,22 +134,21 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input your Name!"
-            }
+              message: "Please input your Name!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <Input name="name" placeholder="Student Name" />
         </Form.Item>
-
         <Form.Item
           label="Father Name"
           name="fatherName"
           rules={[
             {
               required: true,
-              message: "Please input Father's Name!"
-            }
+              message: "Please input Father's Name!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -158,8 +160,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input your Contact!"
-            }
+              message: "Please input your Contact!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -171,8 +173,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: false,
-              message: "Please input your Contact No!"
-            }
+              message: "Please input your Contact No!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -184,8 +186,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Roll No!"
-            }
+              message: "Please input Roll No!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -206,71 +208,119 @@ export default function InsertStudentsData({
           </Select>
         </Form.Item>
         <Form.Item
-          label="Annual Fee"
-          name={["fee", "annualFee"]}
+          label="Tution Fee"
+          name={["fee", "tutionFee"]}
           rules={[
             {
               required: true,
-              message: "Please input Annual Fee!"
-            }
+              message: "Please input Tution Fee!",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
-          <Input placeholder="Annual Fee" type="number" />
+          <Input placeholder="Tution Fee" type="number" />
         </Form.Item>
-        <Form.Item
-          label="School Fee"
-          name={["fee", "schoolFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input School Fee!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input placeholder="School Fee" type="number" />
-        </Form.Item>
-        <Form.Item
-          label="Syllabus Fee"
-          name={["fee", "syllabusFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Syllabus Fee!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input placeholder="Syllabus Fee" type="number" />
-        </Form.Item>
-        <Form.Item
-          label="Registration Fee"
-          name={["fee", "registrationFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Registration Fee!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input placeholder="Registration Fee" type="number" />
-        </Form.Item>
-        <Form.Item
+
+        {filteredChoice === "school" ? (
+          <>
+            <Form.Item
+              label="Annual Fee"
+              name={["fee", "annualFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Annual Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Annual Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Syllabus Fee"
+              name={["fee", "syllabusFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Syllabus Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Syllabus Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Registration Fee"
+              name={["fee", "registrationFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Registration Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Registration Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Missalaneous Fee"
+              name={["balance", "missalaneousBalance"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Missalaneous Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Missalaneous Fee" type="number" />
+            </Form.Item>
+          </>
+        ) : (
+          <>
+            <Form.Item
+              label="Notes Balance"
+              name={["balance", "notesBalance"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Notes Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Notes Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Test session Fee"
+              name={["fee", "testSessionFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Test session Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Test session Fee" type="number" />
+            </Form.Item>
+          </>
+        )}
+
+        {/* <Form.Item
           label="Dubata/Tie"
           name="dubata"
           rules={[
             {
               required: true,
-              message: "Please input Dubata"
-            }
+              message: "Please input Dubata",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <Input name="dubata" placeholder="Dubata/Tie" />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           label="Batch"
           name="batch"
           rules={[
@@ -282,13 +332,19 @@ export default function InsertStudentsData({
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <Input name="batch" placeholder="Batch" />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Enroll In:"
           name="enrolledIn"
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
-          <Radio.Group disabled={type === "Edit"}>
+          <Radio.Group
+            disabled={type === "Edit"}
+            onChange={(e) => {
+              setfilteredChoice(e.target.value);
+              console.log("Target value is: " + e.target.value);
+            }}
+          >
             {SystemConstants.map((data, index) => (
               <Radio key={data.label} value={data.value}>
                 {data.label}
@@ -324,7 +380,7 @@ export default function InsertStudentsData({
               open={open}
               onConfirm={handleOk}
               okButtonProps={{
-                loading: confirmLoading
+                loading: confirmLoading,
               }}
               onCancel={handleCancel}
             >
