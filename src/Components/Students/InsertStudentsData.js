@@ -108,7 +108,7 @@ export default function InsertStudentsData({
   };
 
   const onReset = () => {
-    formRef.resetFields();
+    formRef?.current?.resetFields();
   };
   const onFinishFailed = (errorInfo) => {
     message.error("Failed:", errorInfo);
