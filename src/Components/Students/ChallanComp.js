@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Row, Input, InputNumber, Button, Form, Spin } from "antd";
 import { Select, DatePicker, message, Radio, Popconfirm } from "antd";
 import { useReactToPrint } from "react-to-print";
@@ -7,6 +7,7 @@ import ComponentToPrint from "./ChallanDocument/ChallanDocument";
 import { payStudentFeeReq } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
 export default function InsertStudentsData({
+  filters,
   initialValues,
   setEditModal,
   payStudentFee,
@@ -16,9 +17,21 @@ export default function InsertStudentsData({
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
   const [formValues, setFormValues] = useState({
     balance: { ...initialValues?.balance },
   });
+
+  const { personalData, values } = initialValues;
+  const [fee, setFee] = useState({
+    payableAmount: 0,
+    balance: 0,
+  });
+
+  const pageStyle = `@media print {
+    @page { size: landscape; }
+  }`;
+
   const downloadChallan = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -72,6 +85,25 @@ export default function InsertStudentsData({
     setFormValues((prev) => ({
       balance: { ...allValues.balance },
     }));
+
+    console.log("IN USE EFFECT : ", personalData, values); //* replace its name from effect to something else.
+    const initValues = Object.values(personalData?.balance);
+    const initBalance = initValues.reduce((accumulator, value) => {
+      return accumulator + parseInt(value);
+    });
+    const valuesCurrent = Object.values(values?.balance);
+    const payableAmount = valuesCurrent.reduce((accumulator, value) => {
+      return accumulator + parseInt(value);
+    });
+
+    const balance = initBalance - payableAmount;
+    setFee({ balance, payableAmount });
+  };
+
+  const printLayout = () => {
+    return `@media print {
+      @page { size: landscape; }
+    }`;
   };
   return (
     <div>
@@ -89,6 +121,113 @@ export default function InsertStudentsData({
         preserve={false}
       >
         <Form.Item
+          label="Tution Fee"
+          name={["balance", "schoolFee"]}
+          rules={[
+            {
+              required: true,
+              message: "Please input School Fee!",
+            },
+          ]}
+          style={{ display: "inline-block", width: "calc(50%)" }}
+        >
+          <InputNumber
+            placeholder="Tution Fee"
+            type="number"
+            max={initialValues?.balance?.schoolFee}
+            min={0}
+          />
+        </Form.Item>
+
+        {filteredChoice === "school" ? (
+          <>
+            <Form.Item
+              label="Annual Fee"
+              name={["fee", "annualFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Annual Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Annual Fee" type="number" />
+              {console.log("Its: " + filteredChoice)}
+              {console.log("Its Perosnal Data: " + personalData)}
+            </Form.Item>
+            <Form.Item
+              label="Syllabus Fee"
+              name={["fee", "syllabusFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Syllabus Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Syllabus Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Registration Fee"
+              name={["balance", "registrationFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Registration Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Registration Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Missalaneous Fee"
+              name={["balance", "missalaneousBalance"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Missalaneous Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Missalaneous Fee" type="number" />
+            </Form.Item>
+          </>
+        ) : (
+          <>
+            <Form.Item
+              label="Notes Balance"
+              name={["balance", "notesBalance"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Notes Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Notes Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Test session Fee"
+              name={["fee", "testSessionFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Test session Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Test session Fee" type="number" />
+            </Form.Item>
+          </>
+        )}
+
+        {/*<Form.Item
           label="Annual Fee"
           name={["balance", "annualFee"]}
           rules={[
@@ -103,24 +242,6 @@ export default function InsertStudentsData({
             placeholder="Annual Fee"
             type="number"
             max={initialValues?.balance?.annualFee}
-            min={0}
-          />
-        </Form.Item>
-        <Form.Item
-          label="School Fee"
-          name={["balance", "schoolFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input School Fee!",
-            },
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <InputNumber
-            placeholder="School Fee"
-            type="number"
-            max={initialValues?.balance?.schoolFee}
             min={0}
           />
         </Form.Item>
@@ -161,7 +282,7 @@ export default function InsertStudentsData({
             max={initialValues?.balance?.registrationFee}
             min={0}
           />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Late Fine"
           name={["balance", "lateFine"]}
@@ -174,6 +295,23 @@ export default function InsertStudentsData({
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <InputNumber placeholder="Late Fine" type="number" disabled={true} />
+        </Form.Item>
+        <Form.Item
+          label="Discount Fee"
+          name={["balance", "discountFee"]}
+          rules={[
+            {
+              required: true,
+              message: "Please input Discount Fee!",
+            },
+          ]}
+          style={{ display: "inline-block", width: "calc(50%)" }}
+        >
+          <InputNumber
+            placeholder="Discount Fee"
+            type="number"
+            disabled={true}
+          />
         </Form.Item>
 
         <Form.Item {...tailLayout}>
@@ -206,7 +344,9 @@ export default function InsertStudentsData({
         <ComponentToPrint
           values={formValues}
           personalData={initialValues}
+          fee={fee}
           ref={componentRef}
+          pageStyle={pageStyle}
         />
       </div>
     </div>

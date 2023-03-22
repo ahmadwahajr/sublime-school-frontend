@@ -221,6 +221,22 @@ export default function InsertStudentsData({
           <Input placeholder="Tution Fee" type="number" />
         </Form.Item>
 
+        {type === "Insert" ? (
+          <Form.Item
+            label="Registration Fee"
+            name={["fee", "registrationFee"]}
+            rules={[
+              {
+                required: true,
+                message: "Please input Registration Fee!",
+              },
+            ]}
+            style={{ display: "inline-block", width: "calc(50%)" }}
+          >
+            <Input placeholder="Registration Fee" type="number" />
+          </Form.Item>
+        ) : null}
+
         {filteredChoice === "school" ? (
           <>
             <Form.Item
@@ -249,7 +265,7 @@ export default function InsertStudentsData({
             >
               <Input placeholder="Syllabus Fee" type="number" />
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               label="Registration Fee"
               name={["fee", "registrationFee"]}
               rules={[
@@ -261,7 +277,7 @@ export default function InsertStudentsData({
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
               <Input placeholder="Registration Fee" type="number" />
-            </Form.Item>
+            </Form.Item> */}
             <Form.Item
               label="Missalaneous Fee"
               name={["balance", "missalaneousBalance"]}
