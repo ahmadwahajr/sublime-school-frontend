@@ -1,5 +1,4 @@
 import React, { useState, useRef } from "react";
-import { useReactToPrint } from "react-to-print";
 import { Table, Input, Button, Space, Checkbox, Dropdown } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
@@ -14,7 +13,6 @@ export default function TableComp({
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
-  const componentRef = useRef();
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
