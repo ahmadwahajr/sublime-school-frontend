@@ -47,7 +47,7 @@ function History({ data }) {
                     Notes Balance: {d?.payment?.notesBalance}
                   </Card.Grid>{" "}
                   <Card.Grid style={gridStyle}>
-                    Test Session fee: {d?.payment?.testSessionFee}
+                    Test Session Fee: {d?.payment?.testSessionFee}
                   </Card.Grid>
                 </>
               )}
