@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Descriptions } from "antd";
 import "./styles.css";
+import { initializeConnect } from "react-redux/es/components/connect";
 const ComponentToPrint = React.forwardRef((props, ref) => {
-  const { personalData, fee, values, pageStyle } = props;
+  const { personalData, fee, values, pageStyle, discountFee } = props;
 
   return (
     <div ref={ref} className="main">
@@ -53,12 +54,12 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
             ) : (
               <>
                 <Descriptions.Item label="Test Session Fee" span={2}>
-                  <u>{values?.balance?.annualFee}</u>
-                  {/* change there entity */}
+                  <u>{values?.balance?.testSessionFee}</u>
+                  {/* Show test session fee here */}
                 </Descriptions.Item>
                 <Descriptions.Item label="Notes Balance" span={2}>
-                  <u>{values?.balance?.registrationFee}</u>
-                  {/* change there entity */}
+                  <u>{values?.balance?.notesBalance}</u>
+                  {/* Show notes balance here */}
                 </Descriptions.Item>
               </>
             )}
@@ -66,8 +67,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
               <u>{values?.balance?.lateFine}</u>
             </Descriptions.Item>
             <Descriptions.Item label="Discount" span={2}>
-              <u>{values?.balance?.lateFine}</u>
-              {/* change there entity */}
+              <u>{discountFee}</u>
             </Descriptions.Item>
           </Descriptions>
         </div>

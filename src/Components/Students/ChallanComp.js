@@ -3,10 +3,10 @@ import { Row, Input, InputNumber, Button, Form, Spin } from "antd";
 import { Select, DatePicker, message, Radio, Popconfirm } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./ChallanDocument/ChallanDocument";
-
 import { payStudentFeeReq } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
-export default function InsertStudentsData({
+
+export default function ChallanComp({
   filters,
   initialValues,
   setEditModal,
@@ -18,14 +18,18 @@ export default function InsertStudentsData({
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
   const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
+  const [discountData, setDiscountData] = useState(0);
   const [formValues, setFormValues] = useState({
     balance: { ...initialValues?.balance },
   });
-
-  const { personalData, values } = initialValues;
   const [fee, setFee] = useState({
     payableAmount: 0,
     balance: 0,
+  });
+
+  const initValues = Object.values(initialValues?.balance);
+  const initBalance = initValues.reduce((accumulator, value) => {
+    return accumulator + parseInt(value);
   });
 
   const pageStyle = `@media print {
@@ -86,25 +90,22 @@ export default function InsertStudentsData({
       balance: { ...allValues.balance },
     }));
 
-    console.log("IN USE EFFECT : ", personalData, values); //* replace its name from effect to something else.
-    const initValues = Object.values(personalData?.balance);
-    const initBalance = initValues.reduce((accumulator, value) => {
-      return accumulator + parseInt(value);
-    });
-    const valuesCurrent = Object.values(values?.balance);
-    const payableAmount = valuesCurrent.reduce((accumulator, value) => {
+    console.log("ON Chaning Values : ", initialValues?.balance, allValues); //* replace its name from effect to something else.
+
+    const valuesCurrent = Object.values(allValues?.balance);
+    let payableAmount = valuesCurrent.reduce((accumulator, value) => {
       return accumulator + parseInt(value);
     });
 
-    const balance = initBalance - payableAmount;
+    payableAmount = payableAmount - allValues?.balance?.discountFee * 2;
+    const balance =
+      initBalance - payableAmount - allValues?.balance?.discountFee;
+    console.log("InitBalance:", initBalance);
+    console.log("Payable Amount:", payableAmount);
+    setDiscountData(allValues?.balance?.discountFee);
     setFee({ balance, payableAmount });
   };
 
-  const printLayout = () => {
-    return `@media print {
-      @page { size: landscape; }
-    }`;
-  };
   return (
     <div>
       <Row gutter={16} justify="center">
@@ -122,7 +123,7 @@ export default function InsertStudentsData({
       >
         <Form.Item
           label="Tution Fee"
-          name={["balance", "schoolFee"]}
+          name={["balance", "tutionFee"]}
           rules={[
             {
               required: true,
@@ -134,7 +135,7 @@ export default function InsertStudentsData({
           <InputNumber
             placeholder="Tution Fee"
             type="number"
-            max={initialValues?.balance?.schoolFee}
+            max={initialValues?.balance?.tutionFee}
             min={0}
           />
         </Form.Item>
@@ -143,7 +144,7 @@ export default function InsertStudentsData({
           <>
             <Form.Item
               label="Annual Fee"
-              name={["fee", "annualFee"]}
+              name={["balance", "annualFee"]}
               rules={[
                 {
                   required: true,
@@ -152,13 +153,16 @@ export default function InsertStudentsData({
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
-              <Input placeholder="Annual Fee" type="number" />
-              {console.log("Its: " + filteredChoice)}
-              {console.log("Its Perosnal Data: " + personalData)}
+              <InputNumber
+                placeholder="Annual Fee"
+                type="number"
+                max={initialValues?.balance?.annualFee}
+                min={0}
+              />
             </Form.Item>
             <Form.Item
               label="Syllabus Fee"
-              name={["fee", "syllabusFee"]}
+              name={["balance", "syllabusFee"]}
               rules={[
                 {
                   required: true,
@@ -167,7 +171,12 @@ export default function InsertStudentsData({
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
-              <Input placeholder="Syllabus Fee" type="number" />
+              <InputNumber
+                placeholder="Syllabus Fee"
+                type="number"
+                max={initialValues?.fee?.syllabusFee}
+                min={0}
+              />
             </Form.Item>
             <Form.Item
               label="Registration Fee"
@@ -180,7 +189,12 @@ export default function InsertStudentsData({
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
-              <Input placeholder="Registration Fee" type="number" />
+              <InputNumber
+                placeholder="Registration Fee"
+                type="number"
+                max={initialValues?.balance?.registrationFee}
+                min={0}
+              />
             </Form.Item>
             <Form.Item
               label="Missalaneous Fee"
@@ -193,7 +207,11 @@ export default function InsertStudentsData({
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
-              <Input placeholder="Missalaneous Fee" type="number" />
+              <InputNumber
+                placeholder="Missalaneous Fee"
+                type="number"
+                min={0}
+              />
             </Form.Item>
           </>
         ) : (
@@ -209,11 +227,11 @@ export default function InsertStudentsData({
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
-              <Input placeholder="Notes Fee" type="number" />
+              <InputNumber placeholder="Notes Fee" type="number" min={0} />
             </Form.Item>
             <Form.Item
               label="Test session Fee"
-              name={["fee", "testSessionFee"]}
+              name={["balance", "testSessionFee"]}
               rules={[
                 {
                   required: true,
@@ -222,7 +240,11 @@ export default function InsertStudentsData({
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
-              <Input placeholder="Test session Fee" type="number" />
+              <InputNumber
+                placeholder="Test session Fee"
+                type="number"
+                // min={0}
+              />
             </Form.Item>
           </>
         )}
@@ -307,12 +329,13 @@ export default function InsertStudentsData({
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
-          <InputNumber
-            placeholder="Discount Fee"
-            type="number"
-            disabled={true}
-          />
+          <InputNumber placeholder="Discount Fee" type="number" min={0} />
         </Form.Item>
+
+        <p style={{ color: "balck" }}>
+          Payable Amount: {fee?.payableAmount} /PKR
+        </p>
+        <p style={{ color: "balck" }}>Total Balance: {fee?.balance} /PKR</p>
 
         <Form.Item {...tailLayout}>
           <Button
@@ -347,6 +370,7 @@ export default function InsertStudentsData({
           fee={fee}
           ref={componentRef}
           pageStyle={pageStyle}
+          discountFee={discountData}
         />
       </div>
     </div>

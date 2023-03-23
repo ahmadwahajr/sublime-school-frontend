@@ -221,7 +221,7 @@ export default function InsertStudentsData({
           <Input placeholder="Tution Fee" type="number" />
         </Form.Item>
 
-        {type === "Insert" ? (
+        {type === "Insert" && filteredChoice === "school" ? (
           <Form.Item
             label="Registration Fee"
             name={["fee", "registrationFee"]}

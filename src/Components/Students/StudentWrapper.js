@@ -70,7 +70,11 @@ function StudentWrapper({ message, deleteData, InsertOrUpdate }) {
       setEditModal(true);
     }
     if (key === "2") {
-      setEditData(record?.studentData);
+      const { studentData } = record;
+      setEditData({
+        ...studentData,
+        balance: { ...studentData?.balance, discountFee: 0 },
+      });
       setChallanModal(true);
     }
     if (key === "3") {
