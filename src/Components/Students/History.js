@@ -54,8 +54,6 @@ function History({ data }) {
               <Card.Grid style={gridStyle}>
                 Late Fine: {d?.payment?.lateFine}
               </Card.Grid>
-
-              {/* <Card.Grid style={gridStyle}>Content</Card.Grid> */}
             </Card>
           ))}
         </>
