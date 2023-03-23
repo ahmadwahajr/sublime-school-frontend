@@ -18,7 +18,6 @@ function History({ data }) {
     <div>
       {!loading && (
         <>
-          {/* console.log("DATA: ", data); */}
           {data.map((d, index) => (
             <Card
               key={index}
@@ -28,7 +27,6 @@ function History({ data }) {
               <Card.Grid style={gridStyle}>
                 Tution fee: {d?.payment?.tutionFee}
               </Card.Grid>
-              {/* ----------------------------------------------------------------------- */}
               {d?.payment?.notesBalance === undefined ? (
                 <>
                   <Card.Grid style={gridStyle}>
@@ -53,6 +51,9 @@ function History({ data }) {
               )}
               <Card.Grid style={gridStyle}>
                 Late Fine: {d?.payment?.lateFine}
+              </Card.Grid>
+              <Card.Grid style={gridStyle}>
+                Discount Fee: {d?.payment?.discountFee}
               </Card.Grid>
             </Card>
           ))}
