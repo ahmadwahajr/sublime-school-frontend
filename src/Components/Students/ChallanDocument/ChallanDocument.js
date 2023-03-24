@@ -3,11 +3,10 @@ import { Descriptions } from "antd";
 import "./styles.css";
 import { initializeConnect } from "react-redux/es/components/connect";
 const ComponentToPrint = React.forwardRef((props, ref) => {
-  const { personalData, fee, values, pageStyle, discountFee } = props;
+  const { personalData, fee, values, discountFee } = props;
 
   return (
     <div ref={ref} className="main">
-      <style>{pageStyle}</style>
       <div className="innnerDiv">
         <div className="heading">
           <h1 className="headingText">

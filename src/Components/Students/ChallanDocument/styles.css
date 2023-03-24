@@ -1,6 +1,6 @@
 @media print{
     @page {
-    size: A4 portrait;
+    size: landscape;
     }
     html, body {
     height: 100%; /* Use 100% here to support printing more than a single page*/
@@ -8,6 +8,7 @@
     padding: 0 !important;
     overflow:hidden;
     }
+
     .main{
         
         display:flex;

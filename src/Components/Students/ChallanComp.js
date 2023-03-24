@@ -33,10 +33,6 @@ export default function ChallanComp({
     return accumulator + parseInt(value);
   });
 
-  const pageStyle = `@media print {
-    @page { size: landscape; }
-  }`;
-
   const downloadChallan = useReactToPrint({
     content: () => componentRef.current,
   });
@@ -383,7 +379,6 @@ export default function ChallanComp({
           personalData={initialValues}
           fee={fee}
           ref={componentRef}
-          pageStyle={pageStyle}
           discountFee={discountData}
         />
       </div>
