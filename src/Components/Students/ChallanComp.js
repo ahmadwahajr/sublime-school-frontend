@@ -5,6 +5,7 @@ import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./ChallanDocument/ChallanDocument";
 import { payStudentFeeReq } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
+// import { CloseButton } from "react-toastify/dist/components";
 
 export default function ChallanComp({
   filters,
@@ -105,6 +106,19 @@ export default function ChallanComp({
     setDiscountData(allValues?.balance?.discountFee);
     setFee({ balance, payableAmount });
   };
+
+  useEffect(() => {
+    console.log("ChallanComp has been mounted");
+    const valuesCurrent = Object.values(initialValues?.balance);
+    let payableAmount = valuesCurrent.reduce((accumulator, value) => {
+      return accumulator + parseInt(value);
+    });
+
+    payableAmount = payableAmount - initialValues?.balance?.discountFee * 2;
+    const balance =
+      initBalance - payableAmount - initialValues?.balance?.discountFee;
+    setFee({ balance, payableAmount });
+  }, [initialValues, initBalance]);
 
   return (
     <div>
