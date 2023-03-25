@@ -3,6 +3,8 @@ import { Table, Input, Button, Space, Checkbox, Dropdown } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { items } from "./tableConstants";
+import { useReactToPrint } from "react-to-print";
+import ComponentToPrint from "../ChallanDocument/ChallanDocument";
 
 export default function TableComp({
   data,
@@ -13,6 +15,7 @@ export default function TableComp({
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
   const searchInput = useRef(null);
+  const componentRef = useRef();
 
   const handleSearch = (selectedKeys, confirm, dataIndex) => {
     confirm();
@@ -185,6 +188,10 @@ export default function TableComp({
     },
   ];
 
+  const handlePrint = useReactToPrint({
+    content: () => componentRef.current,
+  });
+
   return (
     <>
       <div>
@@ -207,10 +214,13 @@ export default function TableComp({
           type="primary"
           htmlType="submit"
           style={{ marginRight: "8px" }}
-          // onClick={downloadChallan}
+          onClick={handlePrint}
         >
           Print All Challan
-        </Button>{" "}
+        </Button>
+      </div>
+      <div style={{ display: "none" }}>
+        <ComponentToPrint personalData={data} ref={componentRef} />
       </div>
     </>
   );

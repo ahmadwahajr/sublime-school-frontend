@@ -1,42 +1,66 @@
-@media print{
+@media print {
     @page {
-    size: landscape;
-    }
-    html, body {
-    height: 100%; /* Use 100% here to support printing more than a single page*/
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow:hidden;
+        size: A4 landscape;
     }
 
-    .main{
-        
-        display:flex;
+    html,
+    body {
+        height: 100%;
+        /* Use 100% here to support printing more than a single page*/
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: initial !important;
+    }
+
+    /* .page-break {
+        margin-top: 1rem;
+        display: block;
+        page-break-before: auto;
+    } */
+
+    .innerContainer {
+        display: flex;
+        flex-wrap: wrap;
+        height: 100%;
+        /* background-color: greenyellow; */
+    }
+
+    .main {
+        display: flex;
         justify-content: center;
-        width:50%;
-        /* background:red; */
+        width: 50%;
+        height: 100%;
+        /* background-color: pink; */
     }
-    .innnerDiv{
-        width:80%;
-        /* background:blue; */
-        display:flex;
-        flex-direction:column
+
+    /* .main:last-child {
+        page-break-after: always;
+    } */
+
+    .innnerDiv {
+        width: 90%;
+        /* background: blue; */
+        display: flex;
+        flex-direction: column;
     }
-    .heading{
-        display:flex;
-        width:100%;
-        justify-content:center; 
-        margin-top:20px;
-        border-top:2px solid black;
-        border-bottom:2px solid black;
-        padding:20px 0px 10px 0px;
+
+    .heading {
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        margin-top: 20px;
+        border-top: 2px solid black;
+        border-bottom: 2px solid black;
+        padding: 20px 0px 10px 0px;
     }
-    .details, .feeDetails, .footerDescription{
-        margin-top:10px;
+
+    .details,
+    .feeDetails,
+    .footerDescription {
+        margin-top: 10px;
     }
-    .footerDescription{
-        
-        text-align:right
-        
+
+    .footerDescription {
+        text-align: right;
     }
 }
