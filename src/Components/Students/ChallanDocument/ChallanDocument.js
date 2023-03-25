@@ -5,13 +5,27 @@ import { initializeConnect } from "react-redux/es/components/connect";
 const ComponentToPrint = React.forwardRef((props, ref) => {
   const { personalData, fee, values, discountFee } = props;
   let dataIsArray = Array.isArray(personalData);
-  console.log("personalData in challan Com", personalData);
+  let payableAmount = 0;
   return (
     <>
       {dataIsArray ? (
         <div ref={ref} className="container">
           {personalData.map((obj, index) => (
             <div className="main">
+              {(payableAmount = 0)}
+              {Object.keys(obj?.studentData?.balance).forEach((key) => {
+                console.log(
+                  "key: ",
+                  key,
+                  "value: ",
+                  obj?.studentData?.balance[key]
+                );
+                payableAmount = payableAmount + obj?.studentData?.balance[key];
+              })}
+              {/* set payabeleAmount for every student here */}
+              {/* use foreach with balance obj to get all the sum */}
+
+              {/* {let payableAmount = obj?.studentData?.balance?.reduce((accumulator, value) =>  accumulator + parseInt(value))} */}
               <div className="innnerDiv">
                 <div className="heading">
                   <h1 className="headingText">
@@ -72,7 +86,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                 </div>
                 <div className="footerDescription">
                   <h2>
-                    <strong>Payable Amount: {fee?.payableAmount}/PKR</strong>
+                    <strong>Payable Amount: {payableAmount}/PKR</strong>
                   </h2>
 
                   <h2>Balance: 0/PKR</h2>
