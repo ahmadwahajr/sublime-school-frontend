@@ -12,20 +12,12 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
         <div ref={ref} className="container">
           {personalData.map((obj, index) => (
             <div className="main">
+              {/* calculating the payable amount */}
               {(payableAmount = 0)}
               {Object.keys(obj?.studentData?.balance).forEach((key) => {
-                console.log(
-                  "key: ",
-                  key,
-                  "value: ",
-                  obj?.studentData?.balance[key]
-                );
                 payableAmount = payableAmount + obj?.studentData?.balance[key];
               })}
-              {/* set payabeleAmount for every student here */}
-              {/* use foreach with balance obj to get all the sum */}
 
-              {/* {let payableAmount = obj?.studentData?.balance?.reduce((accumulator, value) =>  accumulator + parseInt(value))} */}
               <div className="innnerDiv">
                 <div className="heading">
                   <h1 className="headingText">
@@ -133,8 +125,6 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                   <>
                     <Descriptions.Item label="Syllabus Fee" span={2}>
                       <u>{values?.balance?.syllabusFee}</u>
-                      {/* {console.log("SyllabusFee: ", values?.balance?.syllabusFee)}
-                  {console.log( "On PersonalDATA SyllabusFee: ",personalData?.balance?.syllabusFee)} */}
                     </Descriptions.Item>
                     <Descriptions.Item label="Annual Fee" span={2}>
                       <u>{values?.balance?.annualFee}</u>
