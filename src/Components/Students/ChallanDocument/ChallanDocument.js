@@ -5,11 +5,11 @@ import { initializeConnect } from "react-redux/es/components/connect";
 const ComponentToPrint = React.forwardRef((props, ref) => {
   const { personalData, fee, values, discountFee } = props;
   let dataIsArray = Array.isArray(personalData);
-  console.log("personalData in challan COM: ", personalData);
+  console.log("personalData in challan Com", personalData);
   return (
     <>
       {dataIsArray ? (
-        <div ref={ref} className="innerContainer">
+        <div ref={ref} className="container">
           {personalData.map((obj, index) => (
             <div className="main">
               <div className="innnerDiv">
@@ -21,7 +21,6 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                 <div className="details">
                   <Descriptions bordered size="default" title="Student Info">
                     <Descriptions.Item label="Name" span={4}>
-                      {console.log("ST Name: ", obj?.studentData?.name)}
                       <u>{obj?.studentData?.name}</u>
                     </Descriptions.Item>
                     <Descriptions.Item label="Father Name" span={4}>
@@ -31,7 +30,6 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                       <u>{obj?.studentData?.classNo?.toUpperCase()}</u>
                     </Descriptions.Item>
                     <Descriptions.Item label="Roll No">
-                      {console.log("ST RollNo: ", obj?.studentData?.rollNo)}
                       <u>{obj?.studentData?.rollNo}</u>
                     </Descriptions.Item>
                   </Descriptions>
@@ -77,7 +75,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                     <strong>Payable Amount: {fee?.payableAmount}/PKR</strong>
                   </h2>
 
-                  <h2>Balance: {fee?.balance}/PKR</h2>
+                  <h2>Balance: 0/PKR</h2>
                   <h2>Date: {new Date().toISOString().slice(0, 10)}</h2>
                 </div>
               </div>
