@@ -5,7 +5,7 @@ import { initializeConnect } from "react-redux/es/components/connect";
 const ComponentToPrint = React.forwardRef((props, ref) => {
   const { personalData, fee, values, discountFee } = props;
   let dataIsArray = Array.isArray(personalData);
-  let payableAmount = 0;
+  let dataForAllStudents = { payableAmount: 0, balance: 0, discount: 0 };
   return (
     <>
       {dataIsArray ? (
@@ -13,9 +13,14 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
           {personalData.map((obj, index) => (
             <div className="main">
               {/* calculating the payable amount */}
-              {(payableAmount = 0)}
+              <div style={{ display: "none" }}>
+                {(dataForAllStudents.payableAmount = 0)}
+              </div>
+
               {Object.keys(obj?.studentData?.balance).forEach((key) => {
-                payableAmount = payableAmount + obj?.studentData?.balance[key];
+                dataForAllStudents.payableAmount =
+                  dataForAllStudents.payableAmount +
+                  obj?.studentData?.balance[key];
               })}
 
               <div className="innnerDiv">
@@ -72,16 +77,18 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
                       <u>{obj?.studentData?.balance?.lateFine}</u>
                     </Descriptions.Item>
                     <Descriptions.Item label="Discount" span={2}>
-                      <u>{discountFee}</u>
+                      <u>{dataForAllStudents?.discount}</u>
                     </Descriptions.Item>
                   </Descriptions>
                 </div>
                 <div className="footerDescription">
                   <h2>
-                    <strong>Payable Amount: {payableAmount}/PKR</strong>
+                    <strong>
+                      Payable Amount: {dataForAllStudents?.payableAmount}/PKR
+                    </strong>
                   </h2>
 
-                  <h2>Balance: 0/PKR</h2>
+                  <h2>Balance: {dataForAllStudents?.balance}/PKR</h2>
                   <h2>Date: {new Date().toISOString().slice(0, 10)}</h2>
                 </div>
               </div>
