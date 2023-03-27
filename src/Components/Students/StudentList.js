@@ -1,48 +1,59 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Checkbox, Button, Divider } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./StudentListDocunment";
 
 const CheckboxGroup = Checkbox.Group;
 
-const StudentList = (props) => {
+const StudentList = props => {
   const { data, columns } = props;
   const [dataColumns, setDataColumns] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
   const [indeterminate, setIndeterminate] = useState(true);
   const options = ["Roll No", "Name", "Father Name", "Phone No"];
   const defaultCheckedList = ["Roll No", "Name"];
+  const [isPrinting, setIsPrinting] = useState(false);
   const [checkedList, setCheckedList] = useState(defaultCheckedList);
   const componentRef = useRef();
-
-  const onCheckAllChange = (e) => {
+  const promiseResolveRef = useRef(null);
+  useEffect(() => {
+    if (isPrinting && promiseResolveRef.current) {
+      // Resolves the Promise, letting `react-to-print` know that the DOM updates are completed
+      promiseResolveRef.current();
+    }
+  }, [isPrinting]);
+  const onCheckAllChange = e => {
     setCheckedList(e.target.checked ? options : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
   };
 
-  const onChange = (e) => {
+  const onChange = e => {
     setCheckedList(e);
     setIndeterminate(!!e.length && e.length < options.length);
     setCheckAll(e.length === options.length);
   };
+  const beforePrint = () => {
+    return new Promise(resolve => {
+      let dataCol = [];
+      columns.map(col => {
+        if (checkedList.includes(col.title)) {
+          dataCol.push(col);
+        }
+      });
+      console.log("Data Columns: ", dataCol);
 
-  const printDocument = useReactToPrint({
-    content: () => componentRef.current,
-  });
-
-  const handlePrintDocument = () => {
-    let dataCol = [];
-    columns.map((col) => {
-      if (checkedList.includes(col.title)) {
-        dataCol.push(col);
-      }
+      setDataColumns([...dataCol]);
+      promiseResolveRef.current = resolve;
+      setIsPrinting(true);
     });
-    // console.log("Data Columns: ", dataCol);
-    setDataColumns(dataCol);
-    console.log("dataColumns: ", dataCol);
-    printDocument();
+    // console.log("dataColumns: ", dataCol);
+    // printDocument();
   };
+  const handlePrintDocument = useReactToPrint({
+    onBeforeGetContent: beforePrint,
+    content: () => componentRef.current
+  });
 
   return (
     <>
