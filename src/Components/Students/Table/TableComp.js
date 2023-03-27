@@ -1,10 +1,11 @@
 import React, { useState, useRef } from "react";
-import { Table, Input, Button, Space, Checkbox, Dropdown } from "antd";
+import { Table, Input, Button, Space, Checkbox, Dropdown, Modal } from "antd";
 import { SearchOutlined, DownOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 import { items } from "./tableConstants";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "../ChallanDocument/ChallanDocument";
+import StudentList from "../StudentList";
 
 export default function TableComp({
   data,
@@ -14,6 +15,7 @@ export default function TableComp({
 }) {
   const [searchText, setSearchText] = useState("");
   const [searchedColumn, setSearchedColumn] = useState("");
+  const [studentListModal, setStudentListModal] = useState(false);
   const searchInput = useRef(null);
   const componentRef = useRef();
 
@@ -192,6 +194,10 @@ export default function TableComp({
     content: () => componentRef.current,
   });
 
+  const handlePrintStudentList = () => {
+    setStudentListModal(true);
+  };
+
   return (
     <>
       <div>
@@ -209,16 +215,37 @@ export default function TableComp({
           }}
         />
       </div>
-      <div>
+      <span>
         <Button
           type="primary"
           htmlType="submit"
           style={{ marginRight: "8px" }}
+          onClick={handlePrintStudentList}
+        >
+          Print Student List
+        </Button>
+        <Modal
+          title="Student Record"
+          open={studentListModal}
+          onCancel={() => setStudentListModal(false)}
+          footer={false}
+          destroyOnClose
+          width="70%"
+        >
+          <StudentList />
+        </Modal>
+      </span>
+
+      <span>
+        <Button
+          type="primary"
+          htmlType="submit"
+          style={{ marginLeft: "10px" }}
           onClick={handlePrint}
         >
           Print All Challan
         </Button>
-      </div>
+      </span>
       <div style={{ display: "none" }}>
         <ComponentToPrint personalData={data} ref={componentRef} />
       </div>
