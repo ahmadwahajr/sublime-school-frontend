@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Descriptions } from "antd";
 import "./styles.css";
 import { initializeConnect } from "react-redux/es/components/connect";
+
 const ComponentToPrint = React.forwardRef((props, ref) => {
   const { personalData, fee, values, discountFee } = props;
   let dataIsArray = Array.isArray(personalData);
@@ -13,6 +14,7 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
           {personalData.map((obj, index) => (
             <div className="main">
               {/* calculating the payable amount */}
+              {/* {console.log(personalData)} */}
               <div style={{ display: "none" }}>
                 {(dataForAllStudents.payableAmount = 0)}
               </div>

@@ -232,7 +232,7 @@ export default function TableComp({
           destroyOnClose
           width="70%"
         >
-          <StudentList />
+          <StudentList columns={columns} data={data} />
         </Modal>
       </span>
 
