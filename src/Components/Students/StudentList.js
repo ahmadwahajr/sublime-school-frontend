@@ -40,7 +40,8 @@ const StudentList = (props) => {
       let dataCol = [];
       columns.map((col) => {
         if (checkedList.includes(col.title)) {
-          dataCol.push(col);
+          let obj = { title: col.title, dataIndex: col.dataIndex };
+          dataCol.push(obj);
         }
       });
       console.log("Data Columns: ", dataCol);
@@ -49,8 +50,6 @@ const StudentList = (props) => {
       promiseResolveRef.current = resolve;
       setIsPrinting(true);
     });
-    // console.log("dataColumns: ", dataCol);
-    // printDocument();
   };
 
   const afterPrint = () => {
