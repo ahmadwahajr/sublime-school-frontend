@@ -6,7 +6,7 @@ import SystemConstants from "../../redux/constants/systemConstants";
 import {
   insertStudentsData,
   editStudentData,
-  deleteStudentData,
+  deleteStudentData
 } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
 
@@ -17,7 +17,7 @@ export default function InsertStudentsData({
   initialValues,
   editStudentRecord,
   setEditModal,
-  deleteStudentRecord,
+  deleteStudentRecord
 }) {
   const formRef = useRef(null);
   const [open, setOpen] = useState(false);
@@ -31,7 +31,7 @@ export default function InsertStudentsData({
       style={{
         fontSize: 16,
         color: "black",
-        marginLeft: "4px",
+        marginLeft: "4px"
       }}
       spin
     />
@@ -59,16 +59,16 @@ export default function InsertStudentsData({
   };
   const layout = {
     wrapperCol: {
-      span: 17,
+      span: 17
     },
     labelCol: {
-      span: 8,
-    },
+      span: 8
+    }
   };
   const tailLayout = {
-    wrapperCol: { offset: 11, span: 16 },
+    wrapperCol: { offset: 11, span: 16 }
   };
-  const dataInsertion = async (values) => {
+  const dataInsertion = async values => {
     setLoading(true);
     setDisabled(true);
     const data = await insertStudentsData(values);
@@ -83,11 +83,16 @@ export default function InsertStudentsData({
       setDisabled(false);
     }
   };
-  const dataUpdation = async (values) => {
+  const dataUpdation = async values => {
     setLoading(true);
     setDisabled(true);
-
-    const data = await editStudentData({ ...values, _id: initialValues._id });
+    const dataToSend = {
+      ...values,
+      _id: initialValues._id,
+      balance: { ...initialValues.balance, ...values.balance },
+      fee: { ...initialValues.fee, ...values.fee }
+    };
+    const data = await editStudentData(dataToSend);
     if (data?.data?.status === "success") {
       console.log(data?.data);
       editStudentRecord(data?.data);
@@ -99,18 +104,18 @@ export default function InsertStudentsData({
       setDisabled(false);
     }
   };
-  const finishFunction = (values) => {
+  const finishFunction = values => {
     if (type === "Insert") dataInsertion(values);
     if (type === "Edit") dataUpdation(values);
   };
-  const onFinish = (values) => {
+  const onFinish = values => {
     finishFunction(values);
   };
 
   const onReset = () => {
     formRef?.current?.resetFields();
   };
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = errorInfo => {
     message.error("Failed:", errorInfo);
   };
   return (
@@ -134,8 +139,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input your Name!",
-            },
+              message: "Please input your Name!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -147,8 +152,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Father's Name!",
-            },
+              message: "Please input Father's Name!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -160,8 +165,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input your Contact!",
-            },
+              message: "Please input your Contact!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -173,8 +178,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: false,
-              message: "Please input your Contact No!",
-            },
+              message: "Please input your Contact No!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -186,8 +191,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Roll No!",
-            },
+              message: "Please input Roll No!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -213,8 +218,8 @@ export default function InsertStudentsData({
           rules={[
             {
               required: true,
-              message: "Please input Tution Fee!",
-            },
+              message: "Please input Tution Fee!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -228,8 +233,8 @@ export default function InsertStudentsData({
             rules={[
               {
                 required: true,
-                message: "Please input Registration Fee!",
-              },
+                message: "Please input Registration Fee!"
+              }
             ]}
             style={{ display: "inline-block", width: "calc(50%)" }}
           >
@@ -245,8 +250,8 @@ export default function InsertStudentsData({
               rules={[
                 {
                   required: true,
-                  message: "Please input Annual Fee!",
-                },
+                  message: "Please input Annual Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -258,8 +263,8 @@ export default function InsertStudentsData({
               rules={[
                 {
                   required: true,
-                  message: "Please input Syllabus Fee!",
-                },
+                  message: "Please input Syllabus Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -284,8 +289,8 @@ export default function InsertStudentsData({
               rules={[
                 {
                   required: true,
-                  message: "Please input Missalaneous Fee!",
-                },
+                  message: "Please input Missalaneous Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -300,8 +305,8 @@ export default function InsertStudentsData({
               rules={[
                 {
                   required: true,
-                  message: "Please input Notes Fee!",
-                },
+                  message: "Please input Notes Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -313,8 +318,8 @@ export default function InsertStudentsData({
               rules={[
                 {
                   required: true,
-                  message: "Please input Test session Fee!",
-                },
+                  message: "Please input Test session Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -356,7 +361,7 @@ export default function InsertStudentsData({
         >
           <Radio.Group
             disabled={type === "Edit"}
-            onChange={(e) => {
+            onChange={e => {
               setfilteredChoice(e.target.value);
               console.log("Target value is: " + e.target.value);
             }}
@@ -396,7 +401,7 @@ export default function InsertStudentsData({
               open={open}
               onConfirm={handleOk}
               okButtonProps={{
-                loading: confirmLoading,
+                loading: confirmLoading
               }}
               onCancel={handleCancel}
             >
