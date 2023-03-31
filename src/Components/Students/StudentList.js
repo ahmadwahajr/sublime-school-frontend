@@ -5,7 +5,7 @@ import ComponentToPrint from "./StudentListDocunment";
 
 const CheckboxGroup = Checkbox.Group;
 
-const StudentList = props => {
+const StudentList = (props) => {
   const { data, columns } = props;
   const [dataColumns, setDataColumns] = useState([]);
   const [checkAll, setCheckAll] = useState(false);
@@ -22,21 +22,23 @@ const StudentList = props => {
       promiseResolveRef.current();
     }
   }, [isPrinting]);
-  const onCheckAllChange = e => {
+
+  const onCheckAllChange = (e) => {
     setCheckedList(e.target.checked ? options : []);
     setIndeterminate(false);
     setCheckAll(e.target.checked);
   };
 
-  const onChange = e => {
+  const onChange = (e) => {
     setCheckedList(e);
     setIndeterminate(!!e.length && e.length < options.length);
     setCheckAll(e.length === options.length);
   };
+
   const beforePrint = () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       let dataCol = [];
-      columns.map(col => {
+      columns.map((col) => {
         if (checkedList.includes(col.title)) {
           dataCol.push(col);
         }
@@ -50,9 +52,14 @@ const StudentList = props => {
     // console.log("dataColumns: ", dataCol);
     // printDocument();
   };
+
+  const afterPrint = () => {
+    setIsPrinting(false);
+  };
   const handlePrintDocument = useReactToPrint({
     onBeforeGetContent: beforePrint,
-    content: () => componentRef.current
+    onAfterPrint: afterPrint,
+    content: () => componentRef.current,
   });
 
   return (
@@ -96,10 +103,3 @@ const StudentList = props => {
 };
 
 export default StudentList;
-
-// const options = [
-//   { label: "Roll No", value: "rollNo" },
-//   { label: "Name", value: "name" },
-//   { label: "Father Name", value: "fatherName" },
-//   { label: "Phone No", value: "phoneNo1" },
-// ];
