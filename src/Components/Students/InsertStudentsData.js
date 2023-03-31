@@ -9,6 +9,7 @@ import {
   deleteStudentData
 } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
+
 export default function InsertStudentsData({
   filters,
   addStudentRecord,
@@ -23,6 +24,8 @@ export default function InsertStudentsData({
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
+
   const antIcon = (
     <LoadingOutlined
       style={{
@@ -83,8 +86,13 @@ export default function InsertStudentsData({
   const dataUpdation = async values => {
     setLoading(true);
     setDisabled(true);
-
-    const data = await editStudentData({ ...values, _id: initialValues._id });
+    const dataToSend = {
+      ...values,
+      _id: initialValues._id,
+      balance: { ...initialValues.balance, ...values.balance },
+      fee: { ...initialValues.fee, ...values.fee }
+    };
+    const data = await editStudentData(dataToSend);
     if (data?.data?.status === "success") {
       console.log(data?.data);
       editStudentRecord(data?.data);
@@ -105,7 +113,7 @@ export default function InsertStudentsData({
   };
 
   const onReset = () => {
-    formRef.resetFields();
+    formRef?.current?.resetFields();
   };
   const onFinishFailed = errorInfo => {
     message.error("Failed:", errorInfo);
@@ -138,7 +146,6 @@ export default function InsertStudentsData({
         >
           <Input name="name" placeholder="Student Name" />
         </Form.Item>
-
         <Form.Item
           label="Father Name"
           name="fatherName"
@@ -206,71 +213,135 @@ export default function InsertStudentsData({
           </Select>
         </Form.Item>
         <Form.Item
-          label="Annual Fee"
-          name={["fee", "annualFee"]}
+          label="Tution Fee"
+          name={["fee", "tutionFee"]}
           rules={[
             {
               required: true,
-              message: "Please input Annual Fee!"
+              message: "Please input Tution Fee!"
             }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
-          <Input placeholder="Annual Fee" type="number" />
+          <Input placeholder="Tution Fee" type="number" />
         </Form.Item>
-        <Form.Item
-          label="School Fee"
-          name={["fee", "schoolFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input School Fee!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input placeholder="School Fee" type="number" />
-        </Form.Item>
-        <Form.Item
-          label="Syllabus Fee"
-          name={["fee", "syllabusFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Syllabus Fee!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input placeholder="Syllabus Fee" type="number" />
-        </Form.Item>
-        <Form.Item
-          label="Registration Fee"
-          name={["fee", "registrationFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Registration Fee!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input placeholder="Registration Fee" type="number" />
-        </Form.Item>
-        <Form.Item
+
+        {type === "Insert" && filteredChoice === "school" ? (
+          <Form.Item
+            label="Registration Fee"
+            name={["fee", "registrationFee"]}
+            rules={[
+              {
+                required: true,
+                message: "Please input Registration Fee!"
+              }
+            ]}
+            style={{ display: "inline-block", width: "calc(50%)" }}
+          >
+            <Input placeholder="Registration Fee" type="number" />
+          </Form.Item>
+        ) : null}
+
+        {filteredChoice === "school" ? (
+          <>
+            <Form.Item
+              label="Annual Fee"
+              name={["fee", "annualFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Annual Fee!"
+                }
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Annual Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Syllabus Fee"
+              name={["fee", "syllabusFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Syllabus Fee!"
+                }
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Syllabus Fee" type="number" />
+            </Form.Item>
+            {/* <Form.Item
+              label="Registration Fee"
+              name={["fee", "registrationFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Registration Fee!",
+                },
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Registration Fee" type="number" />
+            </Form.Item> */}
+            <Form.Item
+              label="Missalaneous Fee"
+              name={["balance", "missalaneousBalance"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Missalaneous Fee!"
+                }
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Missalaneous Fee" type="number" />
+            </Form.Item>
+          </>
+        ) : (
+          <>
+            <Form.Item
+              label="Notes Balance"
+              name={["balance", "notesBalance"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Notes Fee!"
+                }
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Notes Fee" type="number" />
+            </Form.Item>
+            <Form.Item
+              label="Test session Fee"
+              name={["fee", "testSessionFee"]}
+              rules={[
+                {
+                  required: true,
+                  message: "Please input Test session Fee!"
+                }
+              ]}
+              style={{ display: "inline-block", width: "calc(50%)" }}
+            >
+              <Input placeholder="Test session Fee" type="number" />
+            </Form.Item>
+          </>
+        )}
+
+        {/* <Form.Item
           label="Dubata/Tie"
           name="dubata"
           rules={[
             {
               required: true,
-              message: "Please input Dubata"
-            }
+              message: "Please input Dubata",
+            },
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <Input name="dubata" placeholder="Dubata/Tie" />
-        </Form.Item>
-        <Form.Item
+        </Form.Item> */}
+        {/* <Form.Item
           label="Batch"
           name="batch"
           rules={[
@@ -282,13 +353,19 @@ export default function InsertStudentsData({
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
           <Input name="batch" placeholder="Batch" />
-        </Form.Item>
+        </Form.Item> */}
         <Form.Item
           label="Enroll In:"
           name="enrolledIn"
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
-          <Radio.Group disabled={type === "Edit"}>
+          <Radio.Group
+            disabled={type === "Edit"}
+            onChange={e => {
+              setfilteredChoice(e.target.value);
+              console.log("Target value is: " + e.target.value);
+            }}
+          >
             {SystemConstants.map((data, index) => (
               <Radio key={data.label} value={data.value}>
                 {data.label}
