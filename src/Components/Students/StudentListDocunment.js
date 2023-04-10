@@ -5,7 +5,7 @@ const StudentListDocunment = React.forwardRef((props, ref) => {
   const { data, columns } = props;
 
   return (
-    <div ref={ref}>
+    <div ref={ref} style={{ padding: "20px " }}>
       <h1>Student Data</h1>
       <div>
         {columns?.length > 0 && (

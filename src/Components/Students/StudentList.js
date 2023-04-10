@@ -1,80 +1,40 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Checkbox, Button, Divider } from "antd";
+import React, { useState, useRef, useContext } from "react";
+import { Checkbox, Button, Divider, Row, Col } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./StudentListDocunment";
-
+import { StudentContext } from "./StudentWrapper";
+const options = [
+  { title: "Roll No", dataIndex: ["studentData", "rollNo"] },
+  { title: "Name", dataIndex: ["studentData", "name"] },
+  { title: "Father Name", dataIndex: ["studentData", "fatherName"] },
+  { title: "Phone No", dataIndex: ["studentData", "phoneNo"] }
+];
 const CheckboxGroup = Checkbox.Group;
-
-const StudentList = props => {
-  const { data, columns } = props;
-  const [dataColumns, setDataColumns] = useState([]);
-  const [checkAll, setCheckAll] = useState(false);
-  const [indeterminate, setIndeterminate] = useState(true);
-  const options = ["Roll No", "Name", "Father Name", "Phone No"];
-  const defaultCheckedList = ["Roll No", "Name"];
-  const [isPrinting, setIsPrinting] = useState(false);
-  const [checkedList, setCheckedList] = useState(defaultCheckedList);
+const StudentList = () => {
+  const { tableData } = useContext(StudentContext);
+  const [checkedList, setCheckedList] = useState([]);
   const componentRef = useRef();
-  const promiseResolveRef = useRef(null);
-  useEffect(() => {
-    if (isPrinting && promiseResolveRef.current) {
-      // Resolves the Promise, letting `react-to-print` know that the DOM updates are completed
-      promiseResolveRef.current();
-    }
-  }, [isPrinting]);
-
-  const onCheckAllChange = e => {
-    setCheckedList(e.target.checked ? options : []);
-    setIndeterminate(false);
-    setCheckAll(e.target.checked);
-  };
 
   const onChange = e => {
-    setCheckedList(e);
-    setIndeterminate(!!e.length && e.length < options.length);
-    setCheckAll(e.length === options.length);
+    console.log(e);
+    setCheckedList([...e]);
   };
 
-  const beforePrint = () => {
-    return new Promise(resolve => {
-      let dataCol = [];
-      columns.map(col => {
-        if (checkedList.includes(col.title)) {
-          let obj = { title: col.title, dataIndex: col.dataIndex };
-          dataCol.push(obj);
-        }
-      });
-
-      setDataColumns([...dataCol]);
-      promiseResolveRef.current = resolve;
-      setIsPrinting(true);
-    });
-  };
-
-  const afterPrint = () => {
-    setIsPrinting(false);
-  };
   const handlePrintDocument = useReactToPrint({
-    onBeforeGetContent: beforePrint,
-    onAfterPrint: afterPrint,
     content: () => componentRef.current
   });
 
   return (
     <>
-      <Checkbox
-        indeterminate={indeterminate}
-        onChange={onCheckAllChange}
-        checked={checkAll}
-      >
-        Check all
-      </Checkbox>
-      <Divider />
-      <CheckboxGroup
-        options={options}
-        value={checkedList}
-        onChange={onChange}
-      />
+      <CheckboxGroup onChange={onChange}>
+        <Row>
+          {options?.map((data, index) => (
+            <Col span={8}>
+              <Checkbox value={data}>{data.title}</Checkbox>
+            </Col>
+          ))}
+        </Row>
+      </CheckboxGroup>
 
       <br />
       <br />
@@ -90,8 +50,8 @@ const StudentList = props => {
         </Button>
         <div style={{ display: "none" }}>
           <ComponentToPrint
-            data={data}
-            columns={dataColumns}
+            data={tableData?.data}
+            columns={checkedList}
             ref={componentRef}
           />
         </div>

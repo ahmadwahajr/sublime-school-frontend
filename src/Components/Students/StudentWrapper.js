@@ -2,7 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 import Header from "./StudentHeader";
 import TableWrapper from "./TableWrapper";
 import { getStudentsdata } from "../../redux/actions/student-actions";
-
+import StudentFooter from "./StudentFooter";
 export const StudentContext = createContext(null);
 function StudentWrapper({ message, InsertOrUpdate }) {
   const [filters, setFilters] = useState({
@@ -48,6 +48,7 @@ function StudentWrapper({ message, InsertOrUpdate }) {
       >
         <Header message={messages} />
         <TableWrapper />
+        <StudentFooter />
       </StudentContext.Provider>
     </div>
   );
