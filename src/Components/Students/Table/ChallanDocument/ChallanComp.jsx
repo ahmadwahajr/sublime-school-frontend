@@ -6,7 +6,6 @@ import ComponentToPrint from "./ChallanDocument";
 import { payStudentFeeReq } from "../../../../redux/actions/student-actions";
 
 export default function ChallanComp({
-  filters,
   initialValues,
   setEditModal,
   payStudentFee
@@ -16,20 +15,35 @@ export default function ChallanComp({
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
   const [discountData, setDiscountData] = useState(0);
   const [formValues, setFormValues] = useState({
     balance: { ...initialValues?.balance }
   });
+  const [btnDisabled, setBtnDisabled] = useState(false);
   const [fee, setFee] = useState({
     payableAmount: 0,
     balance: 0
   });
-
-  const initValues = Object.values(initialValues?.balance);
-  const initBalance = initValues.reduce((accumulator, value) => {
-    return accumulator + parseInt(value);
-  });
+  const [initBalance, setInitBalance] = useState(0);
+  const computeSum = bal => {
+    const valuesCurrent = Object.values(bal);
+    return valuesCurrent.reduce((accumulator, value) => {
+      return accumulator + parseInt(value);
+    });
+  };
+  const computeFee = bal => {
+    let payableAmount = computeSum(bal);
+    payableAmount = payableAmount - bal?.discountFee * 2;
+    const balance = initBalance - payableAmount - bal?.discountFee;
+    setFee({ balance, payableAmount });
+    return { balance, payableAmount };
+  };
+  useEffect(() => {
+    const init = computeSum(initialValues?.balance);
+    if (init === 0 || isNaN(init)) setBtnDisabled(true);
+    setInitBalance(init);
+    setFee({ balance: 0, payableAmount: init });
+  }, [initialValues]);
 
   const downloadChallan = useReactToPrint({
     content: () => componentRef.current
@@ -48,13 +62,10 @@ export default function ChallanComp({
     if (data?.data?.status === "success") {
       payStudentFee(data?.data);
       message.success("Fee Paid");
-      setConfirmLoading(false);
-      setOpen(false);
       setEditModal(false);
     } else {
       message.error(data);
       setConfirmLoading(false);
-
       setDisabled(false);
     }
   };
@@ -79,30 +90,17 @@ export default function ChallanComp({
       balance: { ...allValues.balance }
     }));
 
-    const valuesCurrent = Object.values(allValues?.balance);
-    let payableAmount = valuesCurrent.reduce((accumulator, value) => {
-      return accumulator + parseInt(value);
-    });
-
-    payableAmount = payableAmount - allValues?.balance?.discountFee * 2;
-    const balance =
-      initBalance - payableAmount - allValues?.balance?.discountFee;
+    const { balance, payableAmount } = computeFee(allValues?.balance);
+    if (
+      (balance <= 0 && payableAmount <= 0) ||
+      isNaN(balance) ||
+      isNaN(payableAmount)
+    )
+      setBtnDisabled(true);
+    else setBtnDisabled(false);
 
     setDiscountData(allValues?.balance?.discountFee);
-    setFee({ balance, payableAmount });
   };
-
-  useEffect(() => {
-    const valuesCurrent = Object.values(initialValues?.balance);
-    let payableAmount = valuesCurrent.reduce((accumulator, value) => {
-      return accumulator + parseInt(value);
-    });
-
-    payableAmount = payableAmount - initialValues?.balance?.discountFee * 2;
-    const balance =
-      initBalance - payableAmount - initialValues?.balance?.discountFee;
-    setFee({ balance, payableAmount });
-  }, [initialValues, initBalance]);
 
   return (
     <div>
@@ -138,7 +136,7 @@ export default function ChallanComp({
           />
         </Form.Item>
 
-        {filteredChoice === "school" ? (
+        {initialValues?.enrolledIn === "school" ? (
           <>
             <Form.Item
               label="Annual Fee"
@@ -285,6 +283,7 @@ export default function ChallanComp({
             htmlType="submit"
             style={{ marginRight: "8px" }}
             onClick={downloadChallan}
+            disabled={btnDisabled}
           >
             Download Challan
           </Button>
@@ -299,7 +298,11 @@ export default function ChallanComp({
             }}
             onCancel={() => setOpen(false)}
           >
-            <Button type="danger" onClick={showPopconfirm}>
+            <Button
+              type="danger"
+              onClick={showPopconfirm}
+              disabled={btnDisabled}
+            >
               Pay Fee
             </Button>
           </Popconfirm>
