@@ -53,7 +53,7 @@ function StudentFooter() {
         </Button>
       </span>
       <div style={{ display: "none" }}>
-        <ComponentToPrint personalData={tableData} ref={componentRef} />
+        <ComponentToPrint personalData={tableData?.data} ref={componentRef} />
       </div>
     </>
   );
