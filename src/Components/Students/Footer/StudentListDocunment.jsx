@@ -3,7 +3,7 @@ import { Table } from "antd";
 
 const StudentListDocunment = React.forwardRef((props, ref) => {
   const { data, columns } = props;
-
+  console.log("Data:", data);
   return (
     <div ref={ref} style={{ padding: "20px " }}>
       <h1>Student Data</h1>
