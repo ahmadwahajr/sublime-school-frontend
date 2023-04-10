@@ -1,17 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Row, Col, Button, Modal, Select, Space, Radio } from "antd";
 import ClassNoData from "../../redux/constants/classNoConstants";
 import SystemConstants from "../../redux/constants/systemConstants";
+import { StudentContext } from "./StudentWrapper";
+import InsertComponent from "./StudentCUD";
 
-function StudentHeader({
-  message,
-  deleteData,
-  InsertComp,
-  UpdateComp,
-  filters,
-  setFilters,
-  addStudentRecord
-}) {
+function StudentHeader({ message }) {
+  const { filters, setFilters } = useContext(StudentContext);
+
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const showModal = () => {
@@ -75,9 +71,8 @@ function StudentHeader({
         footer={false}
         destroyOnClose
       >
-        <InsertComp
+        <InsertComponent
           filters={filters}
-          addStudentRecord={addStudentRecord}
           type="Insert"
           initialValues={filters}
         />

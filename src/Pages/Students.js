@@ -1,17 +1,10 @@
 import React from "react";
 import ChildPage from "../Components/Students/StudentWrapper.js";
-import InsertOrUpdate from "../Components/Students/InsertStudentsData";
+import InsertOrUpdate from "../Components/Students/StudentCUD.js";
 function Students() {
-  const deleteData = {
-    link: "/deleteDoctorsData"
-  };
   return (
     <>
-      <ChildPage
-        message="Students Records"
-        deleteData={deleteData}
-        InsertOrUpdate={InsertOrUpdate}
-      />
+      <ChildPage message="Students Records" InsertOrUpdate={InsertOrUpdate} />
     </>
   );
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import { Row, Input, Button, Form, Spin } from "antd";
 import { Select, DatePicker, message, Radio, Popconfirm } from "antd";
 import ClassNoData from "../../redux/constants/classNoConstants";
@@ -6,110 +6,101 @@ import SystemConstants from "../../redux/constants/systemConstants";
 import {
   insertStudentsData,
   editStudentData,
-  deleteStudentData
+  deleteStudentData,
+  addStudentAction,
+  editStudentAction,
+  deleteStudentAction
 } from "../../redux/actions/student-actions";
 import { LoadingOutlined } from "@ant-design/icons";
+import { StudentContext } from "./StudentWrapper";
+
+const layout = {
+  wrapperCol: {
+    span: 17
+  },
+  labelCol: {
+    span: 8
+  }
+};
+const tailLayout = {
+  wrapperCol: { offset: 11, span: 16 }
+};
+
+const antIcon = (
+  <LoadingOutlined
+    style={{
+      fontSize: 16,
+      color: "black",
+      marginLeft: "4px"
+    }}
+    spin
+  />
+);
 
 export default function InsertStudentsData({
-  filters,
-  addStudentRecord,
   type,
   initialValues,
-  editStudentRecord,
-  setEditModal,
-  deleteStudentRecord
+  setEditModal
 }) {
   const formRef = useRef(null);
+  const { tableData, settableData, filters } = useContext(StudentContext);
+
   const [open, setOpen] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const [loading, setLoading] = useState(false);
   const [disabled, setDisabled] = useState(false);
-  const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
+  const [filteredChoice, setfilteredChoice] = useState(filters?.enrolledIn);
 
-  const antIcon = (
-    <LoadingOutlined
-      style={{
-        fontSize: 16,
-        color: "black",
-        marginLeft: "4px"
-      }}
-      spin
-    />
-  );
-  const showPopconfirm = () => {
-    setOpen(true);
+  const loadingFunc = (bool1, bool2, message = undefined) => {
+    message && message.success(message);
+    setLoading(bool1);
+    setDisabled(bool2);
   };
-  const handleOk = async () => {
-    setConfirmLoading(true);
-    setDisabled(true);
-    const data = await deleteStudentData({ _id: initialValues._id });
-    if (data?.data?.status === "success") {
-      deleteStudentRecord(initialValues._id);
-      message.success("Student Updated");
-      setOpen(false);
-      setConfirmLoading(false);
-      setEditModal(false);
-    } else {
-      message.error(data);
-      setConfirmLoading(false);
-    }
-  };
-  const handleCancel = () => {
-    setOpen(false);
-  };
-  const layout = {
-    wrapperCol: {
-      span: 17
-    },
-    labelCol: {
-      span: 8
-    }
-  };
-  const tailLayout = {
-    wrapperCol: { offset: 11, span: 16 }
-  };
+
   const dataInsertion = async values => {
-    setLoading(true);
-    setDisabled(true);
+    loadingFunc(true, true);
     const data = await insertStudentsData(values);
     if (data?.data?.status === "success") {
-      addStudentRecord(data?.data);
-      message.success("Student Added");
-      setLoading(false);
-      setDisabled(false);
+      addStudentAction(data?.data, settableData, filters);
+      loadingFunc(false, false, "Student Added");
     } else {
       message.error(data);
-      setLoading(false);
-      setDisabled(false);
+      loadingFunc(false, false);
     }
   };
-  const dataUpdation = async values => {
-    setLoading(true);
-    setDisabled(true);
+  const dataUpdation = async (values, type) => {
+    loadingFunc(true, true);
+    setConfirmLoading(true);
     const dataToSend = {
       ...values,
       _id: initialValues._id,
       balance: { ...initialValues.balance, ...values.balance },
       fee: { ...initialValues.fee, ...values.fee }
     };
-    const data = await editStudentData(dataToSend);
+    let data;
+    if (type === "delete")
+      data = await deleteStudentData({ _id: initialValues._id });
+    else data = await editStudentData(dataToSend);
     if (data?.data?.status === "success") {
-      console.log(data?.data);
-      editStudentRecord(data?.data);
+      if (type === "delete")
+        deleteStudentAction(
+          initialValues._id,
+          tableData,
+          settableData,
+          filters
+        );
+      else editStudentAction(data?.data, tableData, settableData, filters);
       message.success("Student Updated");
       setEditModal(false);
     } else {
       message.error(data);
-      setLoading(false);
-      setDisabled(false);
+      loadingFunc(false, false);
+      setConfirmLoading(false);
     }
   };
-  const finishFunction = values => {
-    if (type === "Insert") dataInsertion(values);
-    if (type === "Edit") dataUpdation(values);
-  };
   const onFinish = values => {
-    finishFunction(values);
+    if (type === "Insert") dataInsertion(values);
+    if (type === "Edit") dataUpdation(values, "edit");
   };
 
   const onReset = () => {
@@ -226,7 +217,7 @@ export default function InsertStudentsData({
           <Input placeholder="Tution Fee" type="number" />
         </Form.Item>
 
-        {type === "Insert" && filteredChoice === "school" ? (
+        {type === "Insert" && filteredChoice === "school" && (
           <Form.Item
             label="Registration Fee"
             name={["fee", "registrationFee"]}
@@ -240,7 +231,7 @@ export default function InsertStudentsData({
           >
             <Input placeholder="Registration Fee" type="number" />
           </Form.Item>
-        ) : null}
+        )}
 
         {filteredChoice === "school" ? (
           <>
@@ -270,19 +261,6 @@ export default function InsertStudentsData({
             >
               <Input placeholder="Syllabus Fee" type="number" />
             </Form.Item>
-            {/* <Form.Item
-              label="Registration Fee"
-              name={["fee", "registrationFee"]}
-              rules={[
-                {
-                  required: true,
-                  message: "Please input Registration Fee!",
-                },
-              ]}
-              style={{ display: "inline-block", width: "calc(50%)" }}
-            >
-              <Input placeholder="Registration Fee" type="number" />
-            </Form.Item> */}
             <Form.Item
               label="Missalaneous Fee"
               name={["balance", "missalaneousBalance"]}
@@ -328,32 +306,6 @@ export default function InsertStudentsData({
           </>
         )}
 
-        {/* <Form.Item
-          label="Dubata/Tie"
-          name="dubata"
-          rules={[
-            {
-              required: true,
-              message: "Please input Dubata",
-            },
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input name="dubata" placeholder="Dubata/Tie" />
-        </Form.Item> */}
-        {/* <Form.Item
-          label="Batch"
-          name="batch"
-          rules={[
-            {
-              required: true,
-              message: "Please input Batch No!"
-            }
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <Input name="batch" placeholder="Batch" />
-        </Form.Item> */}
         <Form.Item
           label="Enroll In:"
           name="enrolledIn"
@@ -363,7 +315,6 @@ export default function InsertStudentsData({
             disabled={type === "Edit"}
             onChange={e => {
               setfilteredChoice(e.target.value);
-              console.log("Target value is: " + e.target.value);
             }}
           >
             {SystemConstants.map((data, index) => (
@@ -399,15 +350,15 @@ export default function InsertStudentsData({
               title="Are you sure you want to delete?"
               description="Student data deletion"
               open={open}
-              onConfirm={handleOk}
+              onConfirm={values => dataUpdation(values, "delete")}
               okButtonProps={{
                 loading: confirmLoading
               }}
-              onCancel={handleCancel}
+              onCancel={() => setOpen(false)}
             >
               <Button
                 type="danger"
-                onClick={showPopconfirm}
+                onClick={() => setOpen(true)}
                 disabled={disabled}
               >
                 Delete

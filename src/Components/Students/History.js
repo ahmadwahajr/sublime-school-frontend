@@ -2,13 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Card } from "antd";
 const gridStyle = {
   width: "25%",
-  textAlign: "center",
+  textAlign: "center"
 };
 function History({ data }) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (data) {
-      console.log("DATA: ", data);
       setLoading(false);
     } else {
       setLoading(true);

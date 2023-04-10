@@ -14,12 +14,11 @@ const ComponentToPrint = React.forwardRef((props, ref) => {
           {personalData.map((obj, index) => (
             <div className="main">
               {/* calculating the payable amount */}
-              {/* {console.log(personalData)} */}
               <div style={{ display: "none" }}>
                 {(dataForAllStudents.payableAmount = 0)}
               </div>
 
-              {Object.keys(obj?.studentData?.balance).forEach((key) => {
+              {Object.keys(obj?.studentData?.balance).forEach(key => {
                 dataForAllStudents.payableAmount =
                   dataForAllStudents.payableAmount +
                   obj?.studentData?.balance[key];

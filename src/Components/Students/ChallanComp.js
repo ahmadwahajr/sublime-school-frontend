@@ -1,17 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Row, Input, InputNumber, Button, Form, Spin } from "antd";
-import { Select, DatePicker, message, Radio, Popconfirm } from "antd";
+import { Row, InputNumber, Button, Form } from "antd";
+import { message, Popconfirm } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./ChallanDocument/ChallanDocument";
 import { payStudentFeeReq } from "../../redux/actions/student-actions";
-import { LoadingOutlined } from "@ant-design/icons";
-// import { CloseButton } from "react-toastify/dist/components";
 
 export default function ChallanComp({
   filters,
   initialValues,
   setEditModal,
-  payStudentFee,
+  payStudentFee
 }) {
   const formRef = useRef(null);
   const componentRef = useRef();
@@ -21,11 +19,11 @@ export default function ChallanComp({
   const [filteredChoice, setfilteredChoice] = useState(filters.enrolledIn);
   const [discountData, setDiscountData] = useState(0);
   const [formValues, setFormValues] = useState({
-    balance: { ...initialValues?.balance },
+    balance: { ...initialValues?.balance }
   });
   const [fee, setFee] = useState({
     payableAmount: 0,
-    balance: 0,
+    balance: 0
   });
 
   const initValues = Object.values(initialValues?.balance);
@@ -34,7 +32,7 @@ export default function ChallanComp({
   });
 
   const downloadChallan = useReactToPrint({
-    content: () => componentRef.current,
+    content: () => componentRef.current
   });
   const showPopconfirm = () => {
     setOpen(true);
@@ -45,10 +43,9 @@ export default function ChallanComp({
     setDisabled(true);
     const data = await payStudentFeeReq({
       ...values,
-      _id: initialValues._id,
+      _id: initialValues._id
     });
     if (data?.data?.status === "success") {
-      console.log(data?.data);
       payStudentFee(data?.data);
       message.success("Fee Paid");
       setConfirmLoading(false);
@@ -67,27 +64,23 @@ export default function ChallanComp({
   };
   const layout = {
     wrapperCol: {
-      span: 10,
+      span: 10
     },
     labelCol: {
-      span: 14,
-    },
+      span: 14
+    }
   };
   const tailLayout = {
-    wrapperCol: { offset: 7, span: 16 },
+    wrapperCol: { offset: 7, span: 16 }
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const onFinishFailed = errorInfo => {
     message.error("Failed:", errorInfo);
   };
   const onValuesChange = (values, allValues) => {
-    console.log("VALUES:", formRef?.current?.getFieldsValue());
-
-    setFormValues((prev) => ({
-      balance: { ...allValues.balance },
+    setFormValues(prev => ({
+      balance: { ...allValues.balance }
     }));
-
-    console.log("ON Chaning Values : ", initialValues?.balance, allValues); //* replace its name from effect to something else.
 
     const valuesCurrent = Object.values(allValues?.balance);
     let payableAmount = valuesCurrent.reduce((accumulator, value) => {
@@ -97,14 +90,12 @@ export default function ChallanComp({
     payableAmount = payableAmount - allValues?.balance?.discountFee * 2;
     const balance =
       initBalance - payableAmount - allValues?.balance?.discountFee;
-    console.log("InitBalance:", initBalance);
-    console.log("Payable Amount:", payableAmount);
+
     setDiscountData(allValues?.balance?.discountFee);
     setFee({ balance, payableAmount });
   };
 
   useEffect(() => {
-    console.log("ChallanComp has been mounted");
     const valuesCurrent = Object.values(initialValues?.balance);
     let payableAmount = valuesCurrent.reduce((accumulator, value) => {
       return accumulator + parseInt(value);
@@ -137,8 +128,8 @@ export default function ChallanComp({
           rules={[
             {
               required: true,
-              message: "Please input School Fee!",
-            },
+              message: "Please input School Fee!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -158,8 +149,8 @@ export default function ChallanComp({
               rules={[
                 {
                   required: true,
-                  message: "Please input Annual Fee!",
-                },
+                  message: "Please input Annual Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -176,8 +167,8 @@ export default function ChallanComp({
               rules={[
                 {
                   required: true,
-                  message: "Please input Syllabus Fee!",
-                },
+                  message: "Please input Syllabus Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -194,8 +185,8 @@ export default function ChallanComp({
               rules={[
                 {
                   required: true,
-                  message: "Please input Registration Fee!",
-                },
+                  message: "Please input Registration Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -212,8 +203,8 @@ export default function ChallanComp({
               rules={[
                 {
                   required: true,
-                  message: "Please input Missalaneous Fee!",
-                },
+                  message: "Please input Missalaneous Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -232,8 +223,8 @@ export default function ChallanComp({
               rules={[
                 {
                   required: true,
-                  message: "Please input Notes Fee!",
-                },
+                  message: "Please input Notes Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -245,8 +236,8 @@ export default function ChallanComp({
               rules={[
                 {
                   required: true,
-                  message: "Please input Test session Fee!",
-                },
+                  message: "Please input Test session Fee!"
+                }
               ]}
               style={{ display: "inline-block", width: "calc(50%)" }}
             >
@@ -259,70 +250,14 @@ export default function ChallanComp({
           </>
         )}
 
-        {/*<Form.Item
-          label="Annual Fee"
-          name={["balance", "annualFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Annual Fee!",
-            },
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <InputNumber
-            placeholder="Annual Fee"
-            type="number"
-            max={initialValues?.balance?.annualFee}
-            min={0}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Syllabus Fee"
-          name={["balance", "syllabusFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Syllabus Fee!",
-            },
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-        >
-          <InputNumber
-            placeholder="Syllabus Fee"
-            type="number"
-            max={initialValues?.balance?.syllabusFee}
-            min={0}
-          />
-        </Form.Item>
-        <Form.Item
-          label="Registration Fee"
-          name={["balance", "registrationFee"]}
-          rules={[
-            {
-              required: true,
-              message: "Please input Registration Fee!",
-            },
-          ]}
-          style={{ display: "inline-block", width: "calc(50%)" }}
-          max={initialValues?.balance?.registrationFee}
-          min={0}
-        >
-          <InputNumber
-            placeholder="Registration Fee"
-            type="number"
-            max={initialValues?.balance?.registrationFee}
-            min={0}
-          />
-        </Form.Item> */}
         <Form.Item
           label="Late Fine"
           name={["balance", "lateFine"]}
           rules={[
             {
               required: true,
-              message: "Please input Late Fee!",
-            },
+              message: "Please input Late Fee!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -334,8 +269,8 @@ export default function ChallanComp({
           rules={[
             {
               required: true,
-              message: "Please input Discount Fee!",
-            },
+              message: "Please input Discount Fee!"
+            }
           ]}
           style={{ display: "inline-block", width: "calc(50%)" }}
         >
@@ -363,7 +298,7 @@ export default function ChallanComp({
             open={open}
             onConfirm={handleOk}
             okButtonProps={{
-              loading: confirmLoading,
+              loading: confirmLoading
             }}
             onCancel={handleCancel}
           >
