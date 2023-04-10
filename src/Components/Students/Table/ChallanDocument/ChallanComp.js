@@ -2,8 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Row, InputNumber, Button, Form } from "antd";
 import { message, Popconfirm } from "antd";
 import { useReactToPrint } from "react-to-print";
-import ComponentToPrint from "./ChallanDocument/ChallanDocument";
-import { payStudentFeeReq } from "../../redux/actions/student-actions";
+import ComponentToPrint from "./ChallanDocument";
+import { payStudentFeeReq } from "../../../../redux/actions/student-actions";
 
 export default function ChallanComp({
   filters,

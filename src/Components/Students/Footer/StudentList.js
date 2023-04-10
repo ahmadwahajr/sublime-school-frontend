@@ -2,7 +2,7 @@ import React, { useState, useRef, useContext } from "react";
 import { Checkbox, Button, Divider, Row, Col } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./StudentListDocunment";
-import { StudentContext } from "./StudentWrapper";
+import { StudentContext } from "../StudentWrapper";
 const options = [
   { title: "Roll No", dataIndex: ["studentData", "rollNo"] },
   { title: "Name", dataIndex: ["studentData", "name"] },

@@ -1,15 +1,15 @@
 import React, { useState, useContext } from "react";
 import { Row, Col, Modal } from "antd";
 import dayjs from "dayjs";
-import Table from "./Table/TableComp";
-import ChallanComp from "./ChallanComp";
+import Table from "./TableComp";
+import ChallanComp from "./ChallanDocument/ChallanComp";
 import HistoryComp from "./History";
-import { StudentContext } from "./StudentWrapper";
+import { StudentContext } from "../StudentWrapper";
 import {
   getFeeHistory,
   payStudentAction
-} from "../../redux/actions/student-actions";
-import UpdateComponent from "./StudentCUD";
+} from "../../../redux/actions/student-actions";
+import UpdateComponent from "../StudentCUD";
 function TableWrapper() {
   const { tableData, settableData, filters } = useContext(StudentContext);
   const [editModal, setEditModal] = useState(false);

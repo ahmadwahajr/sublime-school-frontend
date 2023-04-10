@@ -1,8 +1,8 @@
 import React, { useState, useEffect, createContext } from "react";
 import Header from "./StudentHeader";
-import TableWrapper from "./TableWrapper";
+import TableWrapper from "./Table/TableWrapper";
 import { getStudentsdata } from "../../redux/actions/student-actions";
-import StudentFooter from "./StudentFooter";
+import StudentFooter from "./Footer/StudentFooter";
 export const StudentContext = createContext(null);
 function StudentWrapper({ message, InsertOrUpdate }) {
   const [filters, setFilters] = useState({

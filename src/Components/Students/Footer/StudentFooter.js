@@ -1,9 +1,9 @@
 import React, { useState, useRef, useContext } from "react";
 import { useReactToPrint } from "react-to-print";
-import ComponentToPrint from "./ChallanDocument/ChallanDocument";
+import ComponentToPrint from "../Table/ChallanDocument/ChallanDocument";
 import { Button, Modal } from "antd";
 import StudentList from "./StudentList";
-import { StudentContext } from "./StudentWrapper";
+import { StudentContext } from "../StudentWrapper";
 
 function StudentFooter() {
   const { tableData } = useContext(StudentContext);
@@ -25,6 +25,7 @@ function StudentFooter() {
           htmlType="submit"
           style={{ marginRight: "8px" }}
           onClick={handlePrintStudentList}
+          disabled={tableData?.data?.length === 0}
         >
           Print Student List
         </Button>
@@ -46,6 +47,7 @@ function StudentFooter() {
           htmlType="submit"
           style={{ marginLeft: "10px" }}
           onClick={handlePrint}
+          disabled={tableData?.data?.length === 0}
         >
           Print All Challan
         </Button>
