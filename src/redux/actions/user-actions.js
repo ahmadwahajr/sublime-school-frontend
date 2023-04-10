@@ -23,7 +23,7 @@ export const login =
       });
 
       const { data } = await post(
-        `${process.env.REACT_APP_API_URL}/api/v1/users/login`,
+        `${import.meta.env.VITE_APP_API_URL}/api/v1/users/login`,
         {
           username,
           password
@@ -60,7 +60,7 @@ export const logoutApi = _id => async dispatch => {
       }
     };
     await axios.post(
-      `${process.env.REACT_APP_API_URL}/api/v1/users/logout`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/users/logout`,
       { _id },
       config
     );
@@ -96,7 +96,7 @@ export const getUser = _id => async dispatch => {
 
   try {
     const { data } = await axios.get(
-      `${process.env.REACT_APP_API_URL}/api/v1/users/${_id}`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/users/${_id}`,
       config
     );
     dispatch({

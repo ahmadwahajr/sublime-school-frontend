@@ -1,6 +1,5 @@
-import "./App.css";
-import Login from "./Pages/Login.js";
-import Layout from "./Pages/Layout.js";
+import Login from "./Pages/Login.jsx";
+import Layout from "./Pages/Layout.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 // import Dashboard from "./Pages/Dashboard";

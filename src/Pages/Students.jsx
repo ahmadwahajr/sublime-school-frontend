@@ -1,5 +1,5 @@
 import React from "react";
-import ChildPage from "../Components/Students/StudentWrapper.js";
+import ChildPage from "../Components/Students/StudentWrapper.jsx";
 
 function Students() {
   return (

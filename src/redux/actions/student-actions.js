@@ -3,7 +3,7 @@ import { get, post } from "../../utils/apiCalls";
 export const getStudentsdata = async param => {
   try {
     const { data } = await get(
-      `${process.env.REACT_APP_API_URL}/api/v1/students/get-students`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/students/get-students`,
       param
     );
 
@@ -16,7 +16,7 @@ export const getStudentsdata = async param => {
 export const insertStudentsData = async param => {
   try {
     const data = await post(
-      `${process.env.REACT_APP_API_URL}/api/v1/students/add-student`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/students/add-student`,
       param
     );
     return data;
@@ -38,7 +38,7 @@ export const addStudentAction = (record, settableData, filters) => {
 export const editStudentData = async param => {
   try {
     const data = await post(
-      `${process.env.REACT_APP_API_URL}/api/v1/students/update-student`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/students/update-student`,
       param
     );
 
@@ -65,7 +65,7 @@ export const editStudentAction = (record, tableData, settableData, filters) => {
 export const deleteStudentData = async param => {
   try {
     const data = await post(
-      `${process.env.REACT_APP_API_URL}/api/v1/students/delete-student`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/students/delete-student`,
       param
     );
 
@@ -89,7 +89,7 @@ export const deleteStudentAction = (_id, tableData, settableData, filters) => {
 export const payStudentFeeReq = async param => {
   try {
     const data = await post(
-      `${process.env.REACT_APP_API_URL}/api/v1/students/pay-fee`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/students/pay-fee`,
       param
     );
 
@@ -116,7 +116,7 @@ export const payStudentAction = (record, tableData, settableData, filters) => {
 export const getFeeHistory = async param => {
   try {
     const { data } = await get(
-      `${process.env.REACT_APP_API_URL}/api/v1/fee/get-fee`,
+      `${import.meta.env.VITE_APP_API_URL}/api/v1/fee/get-fee`,
       param
     );
 

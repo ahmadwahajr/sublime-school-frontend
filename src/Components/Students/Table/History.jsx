@@ -17,6 +17,7 @@ function History({ data }) {
     <div>
       {!loading && (
         <>
+          {data?.length === 0 && <h1>Hasn't paid any fee yet</h1>}
           {data.map((d, index) => (
             <Card
               key={index}

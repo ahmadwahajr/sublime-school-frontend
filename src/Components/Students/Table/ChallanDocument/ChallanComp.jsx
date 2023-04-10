@@ -59,9 +59,6 @@ export default function ChallanComp({
     }
   };
 
-  const handleCancel = () => {
-    setOpen(false);
-  };
   const layout = {
     wrapperCol: {
       span: 10
@@ -300,7 +297,7 @@ export default function ChallanComp({
             okButtonProps={{
               loading: confirmLoading
             }}
-            onCancel={handleCancel}
+            onCancel={() => setOpen(false)}
           >
             <Button type="danger" onClick={showPopconfirm}>
               Pay Fee

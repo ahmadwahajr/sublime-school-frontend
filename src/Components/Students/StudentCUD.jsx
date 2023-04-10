@@ -51,8 +51,8 @@ export default function InsertStudentsData({
   const [disabled, setDisabled] = useState(false);
   const [filteredChoice, setfilteredChoice] = useState(filters?.enrolledIn);
 
-  const loadingFunc = (bool1, bool2, message = undefined) => {
-    message && message.success(message);
+  const loadingFunc = (bool1, bool2, msg = undefined) => {
+    if (msg) message.success(message);
     setLoading(bool1);
     setDisabled(bool2);
   };
