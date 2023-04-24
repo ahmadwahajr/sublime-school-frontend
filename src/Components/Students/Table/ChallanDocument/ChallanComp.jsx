@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Row, InputNumber, Button, Form } from "antd";
+import { Row, InputNumber, Button, Form, DatePicker } from "antd";
 import { message, Popconfirm } from "antd";
 import { useReactToPrint } from "react-to-print";
 import ComponentToPrint from "./ChallanDocument";
 import { payStudentFeeReq } from "../../../../redux/actions/student-actions";
-
+import dayjs from "dayjs";
 export default function ChallanComp({
   initialValues,
   setEditModal,
@@ -17,7 +17,7 @@ export default function ChallanComp({
   const [disabled, setDisabled] = useState(false);
   const [discountData, setDiscountData] = useState(0);
   const [formValues, setFormValues] = useState({
-    balance: { ...initialValues?.balance }
+    balance: { ...initialValues?.balance, payDate: dayjs(new Date()) }
   });
   const [btnDisabled, setBtnDisabled] = useState(false);
   const [fee, setFee] = useState({
@@ -114,7 +114,7 @@ export default function ChallanComp({
         onValuesChange={onValuesChange}
         onFinishFailed={onFinishFailed}
         justify="center"
-        initialValues={initialValues}
+        initialValues={{ ...initialValues }}
         preserve={false}
       >
         <Form.Item
@@ -271,7 +271,19 @@ export default function ChallanComp({
         >
           <InputNumber placeholder="Discount Fee" type="number" min={0} />
         </Form.Item>
-
+        <Form.Item
+          name="payDate"
+          label="Payment Date"
+          style={{ display: "inline-block", width: "calc(50%)" }}
+          rules={[
+            {
+              required: true,
+              message: "Please input Date!"
+            }
+          ]}
+        >
+          <DatePicker placeholder="Payment Date" />
+        </Form.Item>
         <p style={{ color: "balck" }}>
           Payable Amount: {fee?.payableAmount} /PKR
         </p>
